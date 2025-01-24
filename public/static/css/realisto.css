@@ -1,0 +1,34 @@
+.card {
+    border: 1px solid #d8d8d8;
+}
+
+body {
+    /*background-color: #f5f8fa;*/
+    background-color: #F1F5F9;
+}
+
+.image-input .image-input-wrapper {
+    border: 1px solid #d8d8d8;
+}
+
+.form-control.form-control-solid {
+    background-color: #F1F5F9;
+    border-color: #d8d8d8;
+}
+
+.form-control.form-control-solid:focus {
+    border-color: #0984e3;
+    background-color: white;
+}
+
+a {
+    color: black;
+}
+
+.modal-header {
+    padding: 0.75rem 0.75rem;
+}
+
+.menu-title-gray-800 .menu-item .menu-link .menu-title {
+    color: #000000;
+}

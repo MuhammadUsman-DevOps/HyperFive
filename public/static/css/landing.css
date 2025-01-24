@@ -1,0 +1,230 @@
+[data-kt-sticky-landing-header=on] .landing-header {
+    background-color: #181c32 !important;
+}
+
+
+.landing-dark-bg{
+    background: linear-gradient(to right,#004EC7,#0098E7,#00D1BE);
+}
+
+.blue-gradient-bg{
+    background: linear-gradient(to right,#004EC7,#0098E7);
+}
+
+.landing-light-bg{
+    background: linear-gradient(to right,#D9CDEC,#ADB9DE,#7BA7C9);
+}
+.card-bg{
+    background-color: #2B2A4C;
+}
+.heading-color{
+    color: #023047;
+}
+.btn.btn-secondary {
+    color: #ffffff;
+    border-color: #e4e6ef;
+    background-color: #181c32;
+}
+
+.card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px; /* Set the border radius as needed */
+}
+
+.card .gradient-overlay {
+    width: 60px; /* Set default width */
+    height: 60px; /* Set default height */
+}
+
+.card:hover .gradient-overlay {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    border-radius: 0;
+}
+
+.gradient-overlay {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    /*width: 40%;*/
+    /*height: 40%;*/
+    background: radial-gradient(circle at top right, #76a5e4, #307ff5, #9389fe);
+    border-bottom-left-radius: 80%;
+    transition: all .5s ease;
+    z-index: 0;
+}
+.gradient-overlay-youtube {
+    background: radial-gradient(circle at top right, #ce0000, #ff2727, #ff5454);
+}
+.gradient-overlay-insta {
+
+    background: radial-gradient(circle at top right,   #fa7e1e, #fd893a, #ff9955);
+}
+.gradient-overlay-article {
+    background: radial-gradient(circle at top right, #142ea8, #3020cb, #5e4cff);
+
+}
+
+.gradient-overlay-hashtag {
+
+    background: radial-gradient(circle at top right, #181c32, #212652, #242d69);
+
+}
+.gradient-overlay-twitter {
+
+    background: radial-gradient(circle at top right, #1DA1F2, #3cb4ff, #5dbfff);
+
+}
+
+.gradient-overlay-product {
+
+    background: radial-gradient(circle at top right, #FF9900, #fca82d, #fcbb5d);
+}
+
+.gradient-overlay-rephrase {
+
+    background: radial-gradient(circle at top right, #013220, #0a5e3d, #158a5a);
+}
+
+.gradient-overlay-interview {
+
+    background: radial-gradient(circle at top right, #5C4033, #9b593b, #dc7f55);
+
+}
+
+.card-content {
+    z-index: 1;
+    position: relative;
+}
+
+.card-content h5, .card-content p {
+    transition: color .5s ease;
+}
+
+.card:hover .card-content h5, .card:hover .card-content p {
+    color: white; /* Change text color on hover */
+}
+.custom-margin {
+    margin-left: 5px; /* Adjust the value as needed */
+    margin-right: 5px; /* Adjust the value as needed */
+}
+
+.card-color-1{
+
+    background-color: #fff594
+}
+
+.card-color-2{
+
+    background-color: #95f9bd
+}
+
+.landing-white-border{
+
+    border: 1px dashed #ffffff;
+}
+.text-dark-green {
+    color: #002812!important;
+}
+.text-dark-yellow {
+    color: #241c00!important;
+}
+
+.landing-header {
+    height: 80px;
+}
+ .scrolled {
+     color: black !important; /* Change this to your desired text color */
+ }
+
+@media (max-width: 1000px) {
+    /* Apply styles only when screen size is 1000px or smaller */
+
+    .py-10 {
+        /* Adjust padding for better alignment */
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .py-lg-20 {
+        /* Adjust padding for better alignment */
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .col-lg-6 {
+        /* Center-align columns */
+        text-align: center;
+    }
+
+    .landing-white-border {
+        /* Adjust width for better alignment */
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .d-flex.justify-content-center {
+        /* Center-align navigation links */
+        justify-content: center !important;
+    }
+
+    .d-flex.fw-bold.flex-column {
+        /* Adjust margin for better alignment */
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    .ms-lg-20 {
+        /* Adjust margin for better alignment */
+        margin-left: 20px;
+    }
+}
+
+.noUi-target .noUi-connect {
+    background: #00c020;
+}
+
+.card:hover .svg-icon path {
+    fill: #ffffff;
+}
+.text-blue-gradient {
+
+    background: -webkit-linear-gradient(#004EC7, #0098E7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
+
+
+.drawer {
+    background-color: #181c32 !important;
+
+}
+
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+/** {*/
+/*    scrollbar-width: auto;*/
+/*    scrollbar-color: #181c32 #ffffff;*/
+/*}*/
+
+/*!* Chrome, Edge, and Safari *!*/
+/**::-webkit-scrollbar {*/
+/*    width: 5px;*/
+/*}*/
+
+/**::-webkit-scrollbar-track {*/
+/*    background: #ffffff;*/
+/*}*/
+
+/**::-webkit-scrollbar-thumb {*/
+/*    background-color: #181c32;*/
+/*    border-radius: 10px;*/
+/*    border: 1px solid #ffffff;*/
+/*}*/
+

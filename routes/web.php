@@ -10,6 +10,6 @@ Route::get('/', function () {
 Route::group(["prefix" => "hyper-five/"], function () {
 
     //Services URLs
-    Route::get('services', [ServicesController::class, 'listServices']);
+    Route::get('services', [ServicesController::class, 'listServices'])->name('services.list');
 });
 
