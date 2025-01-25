@@ -167,7 +167,7 @@
 
 
                                         <div class="menu-item">
-                                            <a class="menu-link" href="{{ route("amf_configs") }}">
+                                            <a class="menu-link" href="{{ route("smf_configs") }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -176,7 +176,7 @@
                                         </div>
 
                                     <div class="menu-item">
-                                        <a class="menu-link" href="{{ route("amf_configs") }}">
+                                        <a class="menu-link" href="{{ route("udm_configs") }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -185,7 +185,7 @@
                                     </div>
 
                                     <div class="menu-item">
-                                        <a class="menu-link" href="{{ route("amf_configs") }}">
+                                        <a class="menu-link" href="{{ route("udr_configs") }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -194,7 +194,7 @@
                                     </div>
 
                                     <div class="menu-item">
-                                        <a class="menu-link" href="{{ route("amf_configs") }}">
+                                        <a class="menu-link" href="{{ route("ausf_configs") }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -203,7 +203,7 @@
                                     </div>
 
                                     <div class="menu-item">
-                                        <a class="menu-link" href="{{ route("amf_configs") }}">
+                                        <a class="menu-link" href="{{ route("pcf_configs") }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -212,7 +212,7 @@
                                     </div>
 
                                     <div class="menu-item">
-                                        <a class="menu-link" href="{{ route("amf_configs") }}">
+                                        <a class="menu-link" href="{{ route("chf_configs") }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -220,7 +220,7 @@
                                         </a>
                                     </div>
                                     <div class="menu-item">
-                                        <a class="menu-link" href="{{ route("amf_configs") }}">
+                                        <a class="menu-link" href="{{ route("ehr_configs") }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -229,7 +229,7 @@
                                     </div>
 
                                     <div class="menu-item">
-                                        <a class="menu-link" href="{{ route("amf_configs") }}">
+                                        <a class="menu-link" href="{{ route("nrf_configs") }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -238,7 +238,7 @@
                                     </div>
 
                                     <div class="menu-item">
-                                        <a class="menu-link" href="{{ route("amf_configs") }}">
+                                        <a class="menu-link" href="{{ route("upf_configs") }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>

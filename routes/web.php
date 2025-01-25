@@ -13,6 +13,14 @@ Route::group(["prefix" => "hyper-five/"], function () {
     Route::get('services', [ServicesController::class, 'listServices'])->name('services.list');
     Route::get('config', [ServicesController::class, 'getConfigFromVM'])->name('config.list');
     Route::get('config/amf', [ServicesController::class, 'AMFConfigs'])->name('amf_configs');
-    Route::get('config/udm', [ServicesController::class, 'UDMConfigs'])->name('amf_configs');
+    Route::get('config/smf', [ServicesController::class, 'SMFConfigs'])->name('smf_configs');
+    Route::get('config/udm', [ServicesController::class, 'UDMConfigs'])->name('udm_configs');
+    Route::get('config/udr', [ServicesController::class, 'UDRConfigs'])->name('udr_configs');
+    Route::get('config/ausf', [ServicesController::class, 'AUSFConfigs'])->name('ausf_configs');
+    Route::get('config/pcf', [ServicesController::class, 'PCFConfigs'])->name('pcf_configs');
+    Route::get('config/chf', [ServicesController::class, 'CHFConfigs'])->name('chf_configs');
+    Route::get('config/ehr', [ServicesController::class, 'EHRConfigs'])->name('ehr_configs');
+    Route::get('config/nrf', [ServicesController::class, 'NRFconfigs'])->name('nrf_configs');
+    Route::get('config/upf', [ServicesController::class, 'UPFConfigs'])->name('upf_configs');
 });
 
