@@ -88,7 +88,7 @@
                             id="#kt_aside_menu" data-kt-menu="true" data-kt-menu-expand="false">
 
                             <div class="menu-item ">
-                                <a class="menu-link {{ Route::currentRouteName() == '' ? 'active' : '' }} "
+                                <a class="menu-link {{ Route::currentRouteName() == 'services.list' ? 'active' : '' }} "
                                    href="{{ route("services.list") }}">
                                     <span class="menu-icon">
                                     <span class="svg-icon svg-color svg-icon-2">
@@ -135,6 +135,123 @@
                             </div>
 
 
+                            <div data-kt-menu-trigger="click"
+                                 class="menu-item menu-accordion {{ Route::currentRouteName() == 'amf_configs' || Route::currentRouteName() == 'view_all_orders' ? 'hover show' : '' }} ">
+									<span
+                                        class="menu-link {{ Route::currentRouteName() == 'amf_configs' || Route::currentRouteName() == 'view_all_orders' ? 'active' : '' }}">
+										<span class="menu-icon">
+											<!--begin::Svg Icon | path: icons/duotune/communication/com013.svg-->
+											<span class="svg-icon svg-color svg-icon-2">
+											<!-- https://feathericons.dev/?search=shopping-bag&iconset=feather -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon"
+                                                     fill="none"
+                                                     stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                                                  <line x1="3" x2="21" y1="6" y2="6"/>
+                                                  <path d="M16 10a4 4 0 0 1-8 0"/>
+                                                </svg>
+
+                                                </span>
+                                            <!--end::Svg Icon-->
+										</span>
+										<span class="menu-title ">AMF</span>
+										<span class="menu-arrow"></span>
+									</span>
+                                <div class="menu-sub menu-sub-accordion  menu-active-bg"
+                                    {{ Route::currentRouteName() == 'amf_configs' || Route::currentRouteName() == 'view_all_orders' ? '' : 'display: none; overflow: hidden;' }}>
+                                    <div class="menu-item">
+                                        <a class="menu-link" href="{{ route("amf_configs") }}">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                                            <span class="menu-title">AMF</span>
+                                        </a>
+                                    </div>
+
+
+                                        <div class="menu-item">
+                                            <a class="menu-link" href="{{ route("amf_configs") }}">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                                                <span class="menu-title">SMF</span>
+                                            </a>
+                                        </div>
+
+                                    <div class="menu-item">
+                                        <a class="menu-link" href="{{ route("amf_configs") }}">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                                            <span class="menu-title">UDM</span>
+                                        </a>
+                                    </div>
+
+                                    <div class="menu-item">
+                                        <a class="menu-link" href="{{ route("amf_configs") }}">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                                            <span class="menu-title">UDR</span>
+                                        </a>
+                                    </div>
+
+                                    <div class="menu-item">
+                                        <a class="menu-link" href="{{ route("amf_configs") }}">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                                            <span class="menu-title">AUSF</span>
+                                        </a>
+                                    </div>
+
+                                    <div class="menu-item">
+                                        <a class="menu-link" href="{{ route("amf_configs") }}">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                                            <span class="menu-title">PCF</span>
+                                        </a>
+                                    </div>
+
+                                    <div class="menu-item">
+                                        <a class="menu-link" href="{{ route("amf_configs") }}">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                                            <span class="menu-title">CHF</span>
+                                        </a>
+                                    </div>
+                                    <div class="menu-item">
+                                        <a class="menu-link" href="{{ route("amf_configs") }}">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                                            <span class="menu-title">EHR</span>
+                                        </a>
+                                    </div>
+
+                                    <div class="menu-item">
+                                        <a class="menu-link" href="{{ route("amf_configs") }}">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                                            <span class="menu-title">NRF</span>
+                                        </a>
+                                    </div>
+
+                                    <div class="menu-item">
+                                        <a class="menu-link" href="{{ route("amf_configs") }}">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                                            <span class="menu-title">UPF</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
                     <!--end::Menu-->
@@ -143,7 +260,7 @@
             @show
             <!--begin::Footer-->
             <div class="aside-footer flex-column-auto pt-5 pb-7 px-5" id="kt_aside_footer">
-                <a class="btn btn-custom btn-white w-100" href="{{ route("services.list") }}">
+                <a class="btn btn-custom btn-white w-100" href="">
 
                     <!--begin::Svg Icon | path: icons/duotune/general/gen005.svg-->
                     <span class="svg-icon svg-icon-2 text-danger">

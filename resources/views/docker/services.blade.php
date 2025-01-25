@@ -3,48 +3,6 @@
 @section('extra_styles')
     <style>
 
-        .order-slider {
-            overflow-x: scroll;
-            white-space: nowrap;
-        }
-
-        .order {
-            display: inline-block;
-            padding: 10px 20px;
-            margin-right: 10px;
-            border-radius: 8px;
-            /*background-color: #f0f0f0;*/
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .order.active {
-            background-color: #009ef7 !important;
-            color: #fff;
-        }
-
-        .dialer {
-            width: 200px;
-            margin: auto;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        /*#paymentInput {*/
-        /*    width: 100%;*/
-        /*    padding: 8px;*/
-        /*    font-size: 16px;*/
-        /*    margin-bottom: 10px;*/
-        /*}*/
-
-        .keypad button {
-            width: 30%;
-            padding: 10px;
-            font-size: 16px;
-            margin: 5px 0;
-            cursor: pointer;
-        }
 
 
     </style>
