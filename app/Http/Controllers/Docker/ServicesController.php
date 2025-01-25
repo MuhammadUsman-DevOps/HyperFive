@@ -62,8 +62,9 @@ public function getConfigFromVM()
         // Path to the YAML file on the VM
         $filePath = '/home/imran/free5gc/free5gc-compose/config/amfcfg.yaml';
         $content = $ssh->exec("cat $filePath");
-
+          // dd($content);s
         $yamlContent = Yaml::parse($content);
+        // dd($yamlContent);
         // Optional: Parse YAML if needed
         return view('docker.config', ['yamlContent' => $yamlContent]);
 

@@ -12,22 +12,29 @@
 
     <form action="" method="POST">
         @csrf
-        @foreach ($yamlContent as $key => $value)
-    <div>
-        <label for="{{ $key }}">{{ ucfirst($key) }}:</label>
-        @if (is_array($value))
-            <!-- If value is an array, render a dropdown -->
-            <select name="{{ $key }}" id="{{ $key }}">
-                @foreach ($value as $subKey => $subValue)
-                    <option value="{{ $subKey }}" {{ old($key) == $subKey ? 'selected' : '' }}>{{ $subValue }}</option>
-                @endforeach
-            </select>
-        @else
-            <!-- If value is a string, render an input field -->
-            <input type="text" name="{{ $key }}" id="{{ $key }}" value="{{ old($key, htmlspecialchars($value)) }}">
-        @endif
-    </div>
-@endforeach
+        @php
+                    // Recursive function to render inputs
+                    function renderInputs($yamlContent, $parentKey = '')
+                    {
+                        foreach ($yamlContent as $key => $value) {
+                            $fieldName = $parentKey ? $parentKey . '[' . $key . ']' : $key;
+
+                            if (is_array($value)) {
+                                echo "<label><strong>$key</strong></label>";
+                                echo "<div style='margin-left: 20px;'>";
+                                renderInputs($value, $fieldName);
+                                echo "</div>";
+                            } else {
+                                echo "<div class='mb-3'>";
+                                echo "<label for='$fieldName'>$key</label>";
+                                echo "<input type='text' class='form-control' name='$fieldName' value='" . htmlspecialchars($value, ENT_QUOTES) . "'>";
+                                echo "</div>";
+                            }
+                        }
+                    }
+
+                    renderInputs($yamlContent);
+                @endphp
         <button type="submit">Save Config</button>
     </form>
 
