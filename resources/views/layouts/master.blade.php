@@ -140,21 +140,18 @@
 									<span
                                         class="menu-link {{ Route::currentRouteName() == 'amf_configs' || Route::currentRouteName() == 'view_all_orders' ? 'active' : '' }}">
 										<span class="menu-icon">
-											<!--begin::Svg Icon | path: icons/duotune/communication/com013.svg-->
-											<span class="svg-icon svg-color svg-icon-2">
-											<!-- https://feathericons.dev/?search=shopping-bag&iconset=feather -->
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon"
-                                                     fill="none"
-                                                     stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-                                                  <line x1="3" x2="21" y1="6" y2="6"/>
-                                                  <path d="M16 10a4 4 0 0 1-8 0"/>
-                                                </svg>
-
-                                                </span>
-                                            <!--end::Svg Icon-->
-										</span>
-										<span class="menu-title ">AMF</span>
+                                    <span class="svg-icon svg-color svg-icon-2">
+                                       <!-- https://feathericons.dev/?search=server&iconset=feather -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon"
+                                         fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                      <rect height="8" rx="2" ry="2" width="20" x="2" y="2" />
+                                      <rect height="8" rx="2" ry="2" width="20" x="2" y="14" />
+                                      <line x1="6" x2="6.01" y1="6" y2="6" />
+                                      <line x1="6" x2="6.01" y1="18" y2="18" />
+                                    </svg>
+                                    </span>
+                                </span>
+                                    <span class="menu-title">Services</span>
 										<span class="menu-arrow"></span>
 									</span>
                                 <div class="menu-sub menu-sub-accordion  menu-active-bg"
@@ -321,7 +318,7 @@
                         <div class="d-flex align-items-stretch" id="kt_header_nav">
                             <div class="d-flex align-items-center ms-1 ms-lg-3">
                                 <a href="#" class="fs-2 fw-bold">
-                                  Hyper Five Services
+                                  {{ $page ?? "Hyper Five" }}
                                 </a>
                             </div>
                         </div>

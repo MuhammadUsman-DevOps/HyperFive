@@ -333,7 +333,7 @@ logger: # log output setting
 
             $yamlContent = Yaml::parse($content);
 
-            return view('docker.config', ['yamlContent' => $yamlContent]);
+            return view('docker.config', ['yamlContent' => $yamlContent, "page"=>"AMF Configuration"]);
 
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
@@ -350,7 +350,7 @@ logger: # log output setting
 
             $yamlContent = Yaml::parse($content);
 
-            return view('docker.config', ['yamlContent' => $yamlContent]);
+            return view('docker.config', ['yamlContent' => $yamlContent, "page"=>"UDM Configuration"]);
 
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
