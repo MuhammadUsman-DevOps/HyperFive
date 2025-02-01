@@ -608,7 +608,7 @@ logger: # log output setting
                 'AttachStdout' => true,
                 'AttachStderr' => true,
                 'Tty' => false,
-                'Cmd' => explode(' ', $request->input('command')), // Split the command into an array
+                'Cmd' => ['bash', '-c', $request->input('command')], // Use bash to execute the command
             ]);
 
             if ($response->successful()) {
