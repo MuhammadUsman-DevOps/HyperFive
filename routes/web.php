@@ -23,5 +23,10 @@ Route::group(["prefix" => "hyper-five/"], function () {
     Route::get('config/nrf', [ServicesController::class, 'NRFconfigs'])->name('nrf_configs');
     Route::get('config/upf', [ServicesController::class, 'UPFConfigs'])->name('upf_configs');
     Route::get('config/system', [ServicesController::class, 'systemConfigs'])->name('system_configs');
+
+
+    Route::post('/docker/start/{containerId}', [ServicesController::class, 'startService'])->name('start_service');
+    Route::post('/docker/stop/{containerId}', [ServicesController::class, 'stopService'])->name('start_service');
+    Route::post('/docker/restart/{containerId}', [ServicesController::class, 'restartService'])->name('restart_service');
 });
 

@@ -35,12 +35,12 @@
                                         <!--begin::Title-->
                                         <span class="text-gray-800 text-hover-primary fw-bold fs-3"> {{$service["name"]}}  </span>
                                         <span class="badge @if($service["state"] == "running") badge-light-success @else badge-light-danger @endif fs-4 fw-bold">
-                                            <i class="bi   @if($service["state"] == "running") 
-            bi-check-circle-fill text-success 
-        @elseif($service["state"] == "exited") 
-            bi-x-circle-fill text-danger 
-        @else 
-            bi-exclamation-circle-fill text-warning 
+                                            <i class="bi   @if($service["state"] == "running")
+            bi-check-circle-fill text-success
+        @elseif($service["state"] == "exited")
+            bi-x-circle-fill text-danger
+        @else
+            bi-exclamation-circle-fill text-warning
         @endif  me-2"></i>
                                              {{ $service["state"] }}</span>
 
@@ -64,14 +64,37 @@
 
                                 <div class="separator separator-dashed mt-3 mb-3 border-gray-500"></div>
 
-                                <div class="mt-3 d-flex justify-content-between">
-                                    <button class="btn btn-sm btn-light-success"
-                                    >See Logs
-                                    </button>
-                                    <a class="btn btn-sm btn-primary"
-                                       href="" >View Details
-                                    </a>
+{{--                                <div class="mt-3 d-flex justify-content-between">--}}
+{{--                                    <button class="btn btn-sm btn-light-success"--}}
+{{--                                    >See Logs--}}
+{{--                                    </button>--}}
+{{--                                    <a class="btn btn-sm btn-primary"--}}
+{{--                                       href="" >View Details--}}
+{{--                                    </a>--}}
 
+{{--                                </div>--}}
+
+                                <div class="mt-3 d-flex justify-content-between">
+                                    <button class="btn btn-sm btn-light-success">See Logs</button>
+                                    <div>
+                                        <!-- Start Service -->
+                                        <form action="{{ route('docker.start', $service['id']) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-primary me-2">Start</button>
+                                        </form>
+
+                                        <!-- Stop Service -->
+                                        <form action="{{ route('docker.stop', $service['id']) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-warning me-2">Stop</button>
+                                        </form>
+
+                                        <!-- Restart Service -->
+                                        <form action="{{ route('docker.restart', $service['id']) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-danger">Restart</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>

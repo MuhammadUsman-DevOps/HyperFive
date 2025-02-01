@@ -25,7 +25,7 @@ class ServicesController extends Controller
 //             Fetch services from Docker API
 
 $response = Http::get("{$this->dockerApiUrl}/containers/json", [
-  'all' => true, 
+  'all' => true,
   'filters' => json_encode([
                 'label' => ['com.docker.compose.project=free5gc-compose'], // Filter by project label
             ]),
@@ -513,5 +513,51 @@ logger: # log output setting
     }
 
 
+    public function startService($containerId)
+    {
+        try {
+            $response = Http::post("{$this->dockerApiUrl}/containers/{$containerId}/start");
 
+            if ($response->successful()) {
+                return redirect()->route('services.list')->with('success', 'Service started successfully!');
+            }
+
+            return redirect()->route('services.list')->with('error', 'Failed to start service.');
+
+        } catch (\Exception $e) {
+            return redirect()->route('services.list')->with('error', $e->getMessage());
+        }
+    }
+
+    public function stopService($containerId)
+    {
+        try {
+            $response = Http::post("{$this->dockerApiUrl}/containers/{$containerId}/stop");
+
+            if ($response->successful()) {
+                return redirect()->route('services.list')->with('success', 'Service stopped successfully!');
+            }
+
+            return redirect()->route('services.list')->with('error', 'Failed to stop service.');
+
+        } catch (\Exception $e) {
+            return redirect()->route('services.list')->with('error', $e->getMessage());
+        }
+    }
+
+    public function restartService($containerId)
+    {
+        try {
+            $response = Http::post("{$this->dockerApiUrl}/containers/{$containerId}/restart");
+
+            if ($response->successful()) {
+                return redirect()->route('services.list')->with('success', 'Service restarted successfully!');
+            }
+
+            return redirect()->route('services.list')->with('error', 'Failed to restart service.');
+
+        } catch (\Exception $e) {
+            return redirect()->route('services.list')->with('error', $e->getMessage());
+        }
+    }
 }
