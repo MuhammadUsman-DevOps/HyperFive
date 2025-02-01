@@ -113,7 +113,7 @@
                                 @php
                                     $activeBranchRoutes = [
                                         'system_configs',
-                                     
+
                                     ];
                                 @endphp
                                 <a class="menu-link {{ in_array(Route::currentRouteName(), $activeBranchRoutes) ? 'active' : '' }} "
