@@ -560,4 +560,29 @@ logger: # log output setting
             return redirect()->route('services.list')->with('error', $e->getMessage());
         }
     }
+
+
+    public function viewLogs($containerId)
+    {
+        try {
+            $response = Http::get("{$this->dockerApiUrl}/containers/{$containerId}/logs", [
+                'stdout' => true, // Include standard output logs
+                'stderr' => true, // Include standard error logs
+                'timestamps' => true, // Include timestamps
+            ]);
+
+            if ($response->successful()) {
+                $logs = $response->body();
+                return view('docker.logs', [
+                    'logs' => $logs,
+                    'containerId' => $containerId,
+                ]);
+            }
+
+            return redirect()->route('services.list')->with('error', 'Failed to fetch logs.');
+
+        } catch (\Exception $e) {
+            return redirect()->route('services.list')->with('error', $e->getMessage());
+        }
+    }
 }

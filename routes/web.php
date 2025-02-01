@@ -28,5 +28,8 @@ Route::group(["prefix" => "hyper-five/"], function () {
     Route::post('/docker/start/{containerId}', [ServicesController::class, 'startService'])->name('start_service');
     Route::post('/docker/stop/{containerId}', [ServicesController::class, 'stopService'])->name('stop_service');
     Route::post('/docker/restart/{containerId}', [ServicesController::class, 'restartService'])->name('restart_service');
+
+
+    Route::get('/docker/logs/{containerId}', [ServicesController::class, 'viewLogs'])->name('view_logs');
 });
 

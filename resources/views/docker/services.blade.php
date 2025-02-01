@@ -75,7 +75,7 @@
 {{--                                </div>--}}
 
                                 <div class="mt-3 d-flex justify-content-between">
-                                    <button class="btn btn-sm btn-light-success">See Logs</button>
+                                    <a href="{{ route('view_logs', $service['id']) }}" class="btn btn-sm btn-light-success">View Logs</a>
                                     <div>
                                         @if($service['state'] == 'running')
                                             <!-- Stop Service -->
