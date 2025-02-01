@@ -23,7 +23,7 @@
                     <h3 class="card-title">Logs for Container: {{ $containerId }}</h3>
                     <a href="{{ route('services.list') }}" class="btn btn-sm btn-light-primary float-end">Back to Services</a>
                 </div>
-                <div class="card-body">
+                <div class="card-body scroll-y scroll-x">
                     <pre>{{ $logs }}</pre>
                 </div>
             </div>
