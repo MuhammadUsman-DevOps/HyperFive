@@ -112,12 +112,12 @@
                             <div class="menu-item ">
                                 @php
                                     $activeBranchRoutes = [
-                                        'services.list',
-                                        'services.list',
+                                        'system_configs',
+                                     
                                     ];
                                 @endphp
                                 <a class="menu-link {{ in_array(Route::currentRouteName(), $activeBranchRoutes) ? 'active' : '' }} "
-                                   href="{{ route("services.list") }}">
+                                   href="{{ route("system_configs") }}">
                                     <span class="menu-icon">
                                     <span class="svg-icon svg-color svg-icon-2">
                                        <!-- https://feathericons.dev/?search=server&iconset=feather -->
@@ -130,7 +130,7 @@
                                     </svg>
                                     </span>
                                 </span>
-                                    <span class="menu-title">Services</span>
+                                    <span class="menu-title">System Configuration</span>
                                 </a>
                             </div>
 

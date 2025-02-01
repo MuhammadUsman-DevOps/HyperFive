@@ -22,5 +22,6 @@ Route::group(["prefix" => "hyper-five/"], function () {
     Route::get('config/ehr', [ServicesController::class, 'EHRConfigs'])->name('ehr_configs');
     Route::get('config/nrf', [ServicesController::class, 'NRFconfigs'])->name('nrf_configs');
     Route::get('config/upf', [ServicesController::class, 'UPFConfigs'])->name('upf_configs');
+    Route::get('config/system', [ServicesController::class, 'systemConfigs'])->name('system_configs');
 });
 

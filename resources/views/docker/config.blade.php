@@ -14,7 +14,6 @@
     <div class="post d-flex flex-column-fluid" id="kt_post">
         <!--begin::Container-->
         <div id="kt_content_container" class="container-fluid h-100">
-            <h1>Config Data from VM</h1>
 
             <form action="" method="POST">
                 @csrf

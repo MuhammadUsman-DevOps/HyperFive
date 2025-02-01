@@ -455,7 +455,7 @@ logger: # log output setting
         }
     }
 
-    public function NRFonfigs()
+    public function NRFconfigs()
     {
         try {
             $sshService = new SSHService();
@@ -488,6 +488,24 @@ logger: # log output setting
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
+
+    public function systemConfigs()
+    {
+        try {
+            $sshService = new SSHService();
+            $filePath = '/home/imran/free5gc/free5gc-compose/docker-compose.yaml';
+            $content = $sshService->getFileContent($filePath);
+
+
+            $yamlContent = Yaml::parse($content);
+
+            return view('docker.config', ['yamlContent' => $yamlContent, "page"=>"System Configuration"]);
+
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
 
 
 }
