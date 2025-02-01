@@ -21,7 +21,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Logs for Container: {{ $containerId }}</h3>
-                    <a href="{{ route('docker.services') }}" class="btn btn-sm btn-light-primary float-end">Back to Services</a>
+                    <a href="{{ route('services.list') }}" class="btn btn-sm btn-light-primary float-end">Back to Services</a>
                 </div>
                 <div class="card-body">
                     <pre>{{ $logs }}</pre>
