@@ -31,5 +31,8 @@ Route::group(["prefix" => "hyper-five/"], function () {
 
 
     Route::get('/docker/logs/{containerId}', [ServicesController::class, 'viewLogs'])->name('view_logs');
+
+    Route::get('/docker/command/{containerId}', [ServicesController::class, 'commandExecutionPage'])->name('command_execution');
+    Route::post('/docker/execute/{containerId}', [ServicesController::class, 'executeCommand'])->name('execute_command');
 });
 

@@ -20,7 +20,7 @@
         <div id="kt_content_container" class="container-fluid h-100">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Logs for Container: {{ $containerId }}</h3>
+                    <h3 class="card-title">Logs</h3>
                     <a href="{{ route('services.list') }}" class="btn btn-sm btn-light-primary float-end">Back to Services</a>
                 </div>
                 <div class="card-body scroll-y scroll-x">
