@@ -77,23 +77,28 @@
                                 <div class="mt-3 d-flex justify-content-between">
                                     <button class="btn btn-sm btn-light-success">See Logs</button>
                                     <div>
-                                        <!-- Start Service -->
-                                        <form action="{{ route('start_service', $service['id']) }}" method="POST" style="display: inline;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-primary me-2">Start</button>
-                                        </form>
+                                        @if($service['state'] == 'running')
+                                            <!-- Stop Service -->
+                                            <form action="{{ route('stop_service', $service['id']) }}" method="POST" style="display: inline;">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-warning me-2">Stop</button>
+                                            </form>
 
-                                        <!-- Stop Service -->
-                                        <form action="{{ route('stop_service', $service['id']) }}" method="POST" style="display: inline;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-warning me-2">Stop</button>
-                                        </form>
-
-                                        <!-- Restart Service -->
-                                        <form action="{{ route('restart_service', $service['id']) }}" method="POST" style="display: inline;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-danger">Restart</button>
-                                        </form>
+                                            <!-- Restart Service -->
+                                            <form action="{{ route('restart_service', $service['id']) }}" method="POST" style="display: inline;">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-danger">Restart</button>
+                                            </form>
+                                        @elseif($service['state'] == 'exited' || $service['state'] == 'stopped')
+                                            <!-- Start Service -->
+                                            <form action="{{ route('start_service', $service['id']) }}" method="POST" style="display: inline;">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-primary">Start</button>
+                                            </form>
+                                        @else
+                                            <!-- Unknown State -->
+                                            <span class="text-muted">No actions available</span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
