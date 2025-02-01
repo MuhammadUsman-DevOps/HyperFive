@@ -34,7 +34,15 @@
                                     <div class="d-flex justify-content-between">
                                         <!--begin::Title-->
                                         <span class="text-gray-800 text-hover-primary fw-bold fs-3"> {{$service["name"]}}  </span>
-                                        <span class="badge @if($service["state"] == "running") badge-light-success @else badge-danger @endif fs-4 fw-bold"><i class="bi bi-check-circle-fill text-success me-2"></i> {{ $service["state"] }}</span>
+                                        <span class="badge @if($service["state"] == "running") badge-light-success @else badge-light-danger @endif fs-4 fw-bold">
+                                            <i class="bi   @if($service["state"] == "running") 
+            bi-check-circle-fill text-success 
+        @elseif($service["state"] == "exited") 
+            bi-x-circle-fill text-danger 
+        @else 
+            bi-exclamation-circle-fill text-warning 
+        @endif  me-2"></i>
+                                             {{ $service["state"] }}</span>
 
 
                                     </div>

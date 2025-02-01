@@ -23,9 +23,13 @@ class ServicesController extends Controller
     {
         try {
 //             Fetch services from Docker API
-            $response = Http::get("{$this->dockerApiUrl}/containers/json", [
-                'all' => true,
-            ]);
+
+$response = Http::get("{$this->dockerApiUrl}/containers/json", [
+  'all' => true, 
+  'filters' => json_encode([
+                'label' => ['com.docker.compose.project=free5gc-compose'], // Filter by project label
+            ]),
+]);
 
             if ($response->ok()) {
                 $servicesJson = $response->json();
