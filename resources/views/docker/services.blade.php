@@ -78,19 +78,19 @@
                                     <button class="btn btn-sm btn-light-success">See Logs</button>
                                     <div>
                                         <!-- Start Service -->
-                                        <form action="{{ route('docker.start', $service['id']) }}" method="POST" style="display: inline;">
+                                        <form action="{{ route('start_service', $service['id']) }}" method="POST" style="display: inline;">
                                             @csrf
                                             <button type="submit" class="btn btn-sm btn-primary me-2">Start</button>
                                         </form>
 
                                         <!-- Stop Service -->
-                                        <form action="{{ route('docker.stop', $service['id']) }}" method="POST" style="display: inline;">
+                                        <form action="{{ route('stop_service', $service['id']) }}" method="POST" style="display: inline;">
                                             @csrf
                                             <button type="submit" class="btn btn-sm btn-warning me-2">Stop</button>
                                         </form>
 
                                         <!-- Restart Service -->
-                                        <form action="{{ route('docker.restart', $service['id']) }}" method="POST" style="display: inline;">
+                                        <form action="{{ route('restart_service', $service['id']) }}" method="POST" style="display: inline;">
                                             @csrf
                                             <button type="submit" class="btn btn-sm btn-danger">Restart</button>
                                         </form>
