@@ -81,7 +81,7 @@
                     <div class="col-12 text-center">
                         <iframe src="https://lottie.host/embed/92787ad9-5de7-4213-8018-d71a7b2c516a/mKe8CyuvzR.json"
                                 style="border: none;"></iframe>
-                        <div class="fs-7 text-black mt-5">No orders found</div>
+                        <div class="fs-7 text-black mt-5">No Services found</div>
                     </div>
                 </div>
             @endif

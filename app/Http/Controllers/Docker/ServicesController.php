@@ -23,7 +23,9 @@ class ServicesController extends Controller
     {
         try {
 //             Fetch services from Docker API
-            $response = Http::get("{$this->dockerApiUrl}/containers/json");
+            $response = Http::get("{$this->dockerApiUrl}/containers/json", [
+                'all' => true,
+            ]);
 
             if ($response->ok()) {
                 $servicesJson = $response->json();
