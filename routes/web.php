@@ -34,5 +34,6 @@ Route::group(["prefix" => "hyper-five/"], function () {
 
     Route::get('/docker/command/{containerId}', [ServicesController::class, 'commandExecutionPage'])->name('command_execution');
     Route::post('/docker/execute/{containerId}', [ServicesController::class, 'executeCommand'])->name('execute_command');
+    Route::post('/containers/{containerId}/stop-command', [ServicesController::class, 'stopCommand'])->name('stop_command');
 });
 
