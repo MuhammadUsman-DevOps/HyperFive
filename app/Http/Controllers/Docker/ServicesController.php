@@ -594,6 +594,48 @@ logger: # log output setting
         ]);
     }
 
+//    public function executeCommand($containerId, Request $request)
+//    {
+//        try {
+//            // Validate the input
+//            $request->validate([
+//                'command' => 'required|string',
+//            ]);
+//            // Sanitize the command input to prevent command injection
+//            $command = escapeshellcmd($request->input('command'));
+//
+//            // Prepare the command execution request
+//            $response = Http::post("{$this->dockerApiUrl}/containers/{$containerId}/exec", [
+//                'AttachStdin' => false,
+//                'AttachStdout' => true,
+//                'AttachStderr' => true,
+//                'Tty' => false,
+//                'Cmd' => ['bash', '-c', $command], // Use bash to execute the command
+//            ]);
+//
+//            if ($response->successful()) {
+//                $execId = $response->json()['Id'];
+//
+//                // Start the exec instance
+//                $startResponse = Http::post("{$this->dockerApiUrl}/exec/{$execId}/start", [
+//                    'Detach' => false,
+//                    'Tty' => false,
+//                ]);
+//
+//                if ($startResponse->successful()) {
+//                    $output = $startResponse->body();
+//                    return redirect()->route('command_execution', $containerId)->with('output', $output);
+//                }
+//            }
+//
+//            return redirect()->route('command_execution', $containerId)->with('error', 'Failed to execute command.');
+//
+//        } catch (\Exception $e) {
+//            return redirect()->route('command_execution', $containerId)->with('error', $e->getMessage());
+//        }
+//    }
+
+
     public function executeCommand($containerId, Request $request)
     {
         try {
@@ -614,22 +656,32 @@ logger: # log output setting
             if ($response->successful()) {
                 $execId = $response->json()['Id'];
 
-                // Start the exec instance
-                $startResponse = Http::post("{$this->dockerApiUrl}/exec/{$execId}/start", [
-                    'Detach' => false,
-                    'Tty' => false,
-                ]);
+                // Start the exec instance and stream the response
+                return response()->stream(function () use ($execId) {
+                    $streamResponse = Http::withOptions([
+                        'stream' => true, // Enable streaming
+                    ])->post("{$this->dockerApiUrl}/exec/{$execId}/start", [
+                        'Detach' => false,
+                        'Tty' => false,
+                    ]);
 
-                if ($startResponse->successful()) {
-                    $output = $startResponse->body();
-                    return redirect()->route('command_execution', $containerId)->with('output', $output);
-                }
+                    if ($streamResponse->successful()) {
+                        $stream = $streamResponse->toPsrResponse()->getBody();
+                        while (!$stream->eof()) {
+                            echo $stream->read(1024); // Send chunks to the client
+                            ob_flush();
+                            flush();
+                        }
+                    }
+                }, 200, [
+                    'Content-Type' => 'text/plain',
+                ]);
             }
 
-            return redirect()->route('command_execution', $containerId)->with('error', 'Failed to execute command.');
+            return response()->json(['error' => 'Failed to execute command.'], 400);
 
         } catch (\Exception $e) {
-            return redirect()->route('command_execution', $containerId)->with('error', $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 }

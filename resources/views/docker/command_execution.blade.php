@@ -34,14 +34,79 @@
                     </form>
 
                     <!-- Command Output -->
-                    @if(session('output'))
-                        <div class="mt-4">
-                            <h5>Command Output:</h5>
-                            <pre class="bg-light p-3 rounded">{{ session('output') }}</pre>
-                        </div>
-                    @endif
+{{--                    @if(session('output'))--}}
+{{--                        <div class="mt-4">--}}
+{{--                            <h5>Command Output:</h5>--}}
+{{--                            <pre class="bg-light p-3 rounded">{{ session('output') }}</pre>--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
+                    <!-- Command Output -->
+                    <div class="mt-4">
+                        <h5>Command Output:</h5>
+                        <pre id="command-output" class="bg-light p-3 rounded"></pre>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+@endsection
+
+@section('extra_scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('form');
+            const outputElement = document.getElementById('command-output');
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevent the form from submitting normally
+
+                // Clear previous output
+                outputElement.textContent = '';
+
+                // Get the command from the form
+                const formData = new FormData(form);
+                const command = formData.get('command');
+
+                // Send the command to the backend
+                fetch("{{ route('execute_command', $containerId) }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    },
+                    body: JSON.stringify({ command: command }),
+                })
+                    .then(response => {
+                        const reader = response.body.getReader();
+                        const decoder = new TextDecoder();
+
+                        function readStream() {
+                            return reader.read().then(({ done, value }) => {
+                                if (done) {
+                                    console.log('Stream complete');
+                                    return;
+                                }
+
+                                // Decode the stream chunk and append it to the output
+                                const chunk = decoder.decode(value, { stream: true });
+                                outputElement.textContent += chunk;
+
+                                // Scroll to the bottom of the output
+                                outputElement.scrollTop = outputElement.scrollHeight;
+
+                                // Continue reading the stream
+                                return readStream();
+                            });
+                        }
+
+                        // Start reading the stream
+                        return readStream();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        outputElement.textContent = 'Failed to execute command.';
+                    });
+            });
+        });
+    </script>
 @endsection
