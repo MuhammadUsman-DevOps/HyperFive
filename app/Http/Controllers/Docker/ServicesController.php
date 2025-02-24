@@ -633,7 +633,7 @@ logger: # log output setting
                         while (!$stream->eof()) {
                             $chunk = $stream->read(1024);
                             // Filter out unwanted content (e.g., HTML, JavaScript)
-                            if (!str_contains($chunk, '<!DOCTYPE html>') && !str_contains($chunk, '<script>')) {
+                            if (!str_contains($chunk, '<html>') && !str_contains($chunk, '<script>')) {
                                 echo $chunk;
                                 ob_flush();
                                 flush();
@@ -679,5 +679,36 @@ logger: # log output setting
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+
+    public function streamLogs($containerId)
+    {
+        return response()->stream(function () use ($containerId) {
+            $streamResponse = Http::withOptions(['stream' => true])
+                ->get("{$this->dockerApiUrl}/containers/{$containerId}/logs", [
+                    'stdout' => true, // Standard output logs
+                    'stderr' => true, // Standard error logs
+                    'follow' => true, // Keep following logs
+                    'timestamps' => false, // Optional: Add timestamps if needed
+                ]);
+
+            if ($streamResponse->successful()) {
+                $stream = $streamResponse->toPsrResponse()->getBody();
+
+                while (!$stream->eof()) {
+                    echo "data: " . trim($stream->read(1024)) . "\n\n"; // SSE format
+                    ob_flush();
+                    flush();
+                    usleep(500000); // 0.5s delay to avoid overwhelming the frontend
+                }
+            } else {
+                echo "data: ERROR: Failed to stream logs\n\n";
+            }
+        }, 200, [
+            'Content-Type' => 'text/event-stream',
+            'Cache-Control' => 'no-cache',
+            'Connection' => 'keep-alive',
+        ]);
     }
 }
