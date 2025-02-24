@@ -30,17 +30,11 @@
                         <div class="input-group mb-3">
                             <input type="text" name="command" class="form-control" placeholder="Enter command to execute" required>
                             <button type="submit" class="btn btn-primary">Execute</button>
-                            <button type="button" id="stop-button" class="btn btn-danger" disabled>Stop</button>
+{{--                            <button type="button" id="stop-button" class="btn btn-danger" disabled>Stop</button>--}}
                         </div>
                     </form>
 
-                    <!-- Command Output -->
-{{--                    @if(session('output'))--}}
-{{--                        <div class="mt-4">--}}
-{{--                            <h5>Command Output:</h5>--}}
-{{--                            <pre class="bg-light p-3 rounded">{{ session('output') }}</pre>--}}
-{{--                        </div>--}}
-{{--                    @endif--}}
+
                     <!-- Command Output -->
                     <div class="mt-4">
                         <h5>Command Output:</h5>
@@ -57,7 +51,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('command-form');
             const outputElement = document.getElementById('command-output');
-            const stopButton = document.getElementById('stop-button');
+            // const stopButton = document.getElementById('stop-button');
 
             form.addEventListener('submit', function (event) {
                 event.preventDefault(); // Prevent the form from submitting normally
@@ -66,7 +60,7 @@
                 outputElement.textContent = '';
 
                 // Enable the stop button
-                stopButton.disabled = false;
+                // stopButton.disabled = false;
 
                 // Get the command from the form
                 const formData = new FormData(form);
@@ -116,23 +110,23 @@
             });
 
             // Handle the stop button click
-            stopButton.addEventListener('click', function () {
-                fetch("{{ route('stop_command', $containerId) }}", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    },
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data.message);
-                        stopButton.disabled = true; // Disable the stop button after stopping
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-            });
+            {{--stopButton.addEventListener('click', function () {--}}
+            {{--    fetch("{{ route('stop_command', $containerId) }}", {--}}
+            {{--        method: 'POST',--}}
+            {{--        headers: {--}}
+            {{--            'Content-Type': 'application/json',--}}
+            {{--            'X-CSRF-TOKEN': '{{ csrf_token() }}',--}}
+            {{--        },--}}
+            {{--    })--}}
+            {{--        .then(response => response.json())--}}
+            {{--        .then(data => {--}}
+            {{--            console.log(data.message);--}}
+            {{--            stopButton.disabled = true; // Disable the stop button after stopping--}}
+            {{--        })--}}
+            {{--        .catch(error => {--}}
+            {{--            console.error('Error:', error);--}}
+            {{--        });--}}
+            {{--});--}}
         });
     </script>
 @endsection

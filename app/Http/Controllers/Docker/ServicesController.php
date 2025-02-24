@@ -631,9 +631,13 @@ logger: # log output setting
                     if ($streamResponse->successful()) {
                         $stream = $streamResponse->toPsrResponse()->getBody();
                         while (!$stream->eof()) {
-                            echo $stream->read(1024); // Send chunks to the client
-                            ob_flush();
-                            flush();
+                            $chunk = $stream->read(1024);
+                            // Filter out unwanted content (e.g., HTML, JavaScript)
+                            if (!str_contains($chunk, '<!DOCTYPE html>') && !str_contains($chunk, '<script>')) {
+                                echo $chunk;
+                                ob_flush();
+                                flush();
+                            }
                         }
                     }
 
