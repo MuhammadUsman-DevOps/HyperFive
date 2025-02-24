@@ -647,9 +647,10 @@ logger: # log output setting
                 }, 200, [
                     'Content-Type' => 'text/plain',
                 ]);
-            }
 
-            return response()->json(['error' => 'Failed to execute command.'], 400);
+            }else{
+                return response()->json(['error' => 'Failed to execute command.'], 400);
+            }
 
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
