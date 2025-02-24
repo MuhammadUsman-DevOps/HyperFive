@@ -681,34 +681,4 @@ logger: # log output setting
         }
     }
 
-
-    public function streamLogs($containerId)
-    {
-        return response()->stream(function () use ($containerId) {
-            $streamResponse = Http::withOptions(['stream' => true])
-                ->get("{$this->dockerApiUrl}/containers/{$containerId}/logs", [
-                    'stdout' => true, // Standard output logs
-                    'stderr' => true, // Standard error logs
-                    'follow' => true, // Keep following logs
-                    'timestamps' => false, // Optional: Add timestamps if needed
-                ]);
-
-            if ($streamResponse->successful()) {
-                $stream = $streamResponse->toPsrResponse()->getBody();
-
-                while (!$stream->eof()) {
-                    echo "data: " . trim($stream->read(1024)) . "\n\n"; // SSE format
-                    ob_flush();
-                    flush();
-                    usleep(500000); // 0.5s delay to avoid overwhelming the frontend
-                }
-            } else {
-                echo "data: ERROR: Failed to stream logs\n\n";
-            }
-        }, 200, [
-            'Content-Type' => 'text/event-stream',
-            'Cache-Control' => 'no-cache',
-            'Connection' => 'keep-alive',
-        ]);
-    }
 }
