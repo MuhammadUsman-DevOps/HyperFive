@@ -12,11 +12,12 @@ use Symfony\Component\Yaml\Yaml;
 
 class ServicesController extends Controller
 {
+    private $runningExecutions = [];
     private $dockerApiUrl;
 
     public function __construct()
     {
-        $this->dockerApiUrl = 'http://192.168.11.129:2375/v1.43';
+        $this->dockerApiUrl = 'http://192.168.11.131:2375/v1.43';
     }
 
     public function listServices()
@@ -594,46 +595,6 @@ logger: # log output setting
         ]);
     }
 
-//    public function executeCommand($containerId, Request $request)
-//    {
-//        try {
-//            // Validate the input
-//            $request->validate([
-//                'command' => 'required|string',
-//            ]);
-//            // Sanitize the command input to prevent command injection
-//            $command = escapeshellcmd($request->input('command'));
-//
-//            // Prepare the command execution request
-//            $response = Http::post("{$this->dockerApiUrl}/containers/{$containerId}/exec", [
-//                'AttachStdin' => false,
-//                'AttachStdout' => true,
-//                'AttachStderr' => true,
-//                'Tty' => false,
-//                'Cmd' => ['bash', '-c', $command], // Use bash to execute the command
-//            ]);
-//
-//            if ($response->successful()) {
-//                $execId = $response->json()['Id'];
-//
-//                // Start the exec instance
-//                $startResponse = Http::post("{$this->dockerApiUrl}/exec/{$execId}/start", [
-//                    'Detach' => false,
-//                    'Tty' => false,
-//                ]);
-//
-//                if ($startResponse->successful()) {
-//                    $output = $startResponse->body();
-//                    return redirect()->route('command_execution', $containerId)->with('output', $output);
-//                }
-//            }
-//
-//            return redirect()->route('command_execution', $containerId)->with('error', 'Failed to execute command.');
-//
-//        } catch (\Exception $e) {
-//            return redirect()->route('command_execution', $containerId)->with('error', $e->getMessage());
-//        }
-//    }
 
 
     public function executeCommand($containerId, Request $request)
@@ -655,9 +616,11 @@ logger: # log output setting
 
             if ($response->successful()) {
                 $execId = $response->json()['Id'];
+// Store the execId for later use
+                $this->runningExecutions[$containerId] = $execId;
 
                 // Start the exec instance and stream the response
-                return response()->stream(function () use ($execId) {
+                return response()->stream(function () use ($execId, $containerId) {
                     $streamResponse = Http::withOptions([
                         'stream' => true, // Enable streaming
                     ])->post("{$this->dockerApiUrl}/exec/{$execId}/start", [
@@ -673,12 +636,40 @@ logger: # log output setting
                             flush();
                         }
                     }
+
+                    // Remove the execId from running executions once the stream ends
+                    unset($this->runningExecutions[$containerId]);
+
                 }, 200, [
                     'Content-Type' => 'text/plain',
                 ]);
             }
 
             return response()->json(['error' => 'Failed to execute command.'], 400);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+
+    public function stopCommand($containerId)
+    {
+        try {
+            if (isset($this->runningExecutions[$containerId])) {
+                $execId = $this->runningExecutions[$containerId];
+
+                // Kill the exec instance
+                $response = Http::post("{$this->dockerApiUrl}/exec/{$execId}/kill");
+
+                if ($response->successful()) {
+                    // Remove the execId from running executions
+                    unset($this->runningExecutions[$containerId]);
+                    return response()->json(['message' => 'Command stopped successfully.'], 200);
+                }
+            }
+
+            return response()->json(['error' => 'No running command found.'], 400);
 
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);

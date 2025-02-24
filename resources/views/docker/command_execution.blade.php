@@ -25,11 +25,12 @@
                 </div>
                 <div class="card-body">
                     <!-- Command Execution Form -->
-                    <form action="{{ route('execute_command', $containerId) }}" method="POST">
+                    <form id="command-form">
                         @csrf
                         <div class="input-group mb-3">
                             <input type="text" name="command" class="form-control" placeholder="Enter command to execute" required>
                             <button type="submit" class="btn btn-primary">Execute</button>
+                            <button type="button" id="stop-button" class="btn btn-danger" disabled>Stop</button>
                         </div>
                     </form>
 
@@ -54,14 +55,18 @@
 @section('extra_scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const form = document.querySelector('form');
+            const form = document.getElementById('command-form');
             const outputElement = document.getElementById('command-output');
+            const stopButton = document.getElementById('stop-button');
 
             form.addEventListener('submit', function (event) {
                 event.preventDefault(); // Prevent the form from submitting normally
 
                 // Clear previous output
                 outputElement.textContent = '';
+
+                // Enable the stop button
+                stopButton.disabled = false;
 
                 // Get the command from the form
                 const formData = new FormData(form);
@@ -84,6 +89,7 @@
                             return reader.read().then(({ done, value }) => {
                                 if (done) {
                                     console.log('Stream complete');
+                                    stopButton.disabled = true; // Disable the stop button when the stream ends
                                     return;
                                 }
 
@@ -105,6 +111,26 @@
                     .catch(error => {
                         console.error('Error:', error);
                         outputElement.textContent = 'Failed to execute command.';
+                        stopButton.disabled = true;
+                    });
+            });
+
+            // Handle the stop button click
+            stopButton.addEventListener('click', function () {
+                fetch("{{ route('stop_command', $containerId) }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.message);
+                        stopButton.disabled = true; // Disable the stop button after stopping
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
                     });
             });
         });
