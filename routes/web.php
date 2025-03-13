@@ -1,14 +1,21 @@
 <?php
 
+use App\Http\Controllers\Core\AuthenticationController;
+use App\Http\Controllers\Core\SubscriberController;
 use App\Http\Controllers\Docker\ServicesController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/login', [AuthenticationController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthenticationController::class, 'login'])->name('login.submit');
+Route::get('/logout', [AuthenticationController::class, 'logout'])->name('logout');
+
+Route::get('/subscribers', [SubscriberController::class, 'index'])->name('subscribers')->middleware('auth.session');
+Route::get('/subscribers/{ueId}/{plmnId}', [SubscriberController::class, 'show'])->name('subscriber.detail');
 
 Route::group(["prefix" => "hyper-five/"], function () {
-
     //Services URLs
     Route::get('services', [ServicesController::class, 'listServices'])->name('services.list');
     Route::get('config', [ServicesController::class, 'getConfigFromVM'])->name('config.list');
