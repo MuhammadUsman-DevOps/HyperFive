@@ -43,7 +43,7 @@ class UEController extends Controller
         $ueContexts = $this->ueService->getAllRegisteredUEContexts();
 
         if (!$ueContexts) {
-            return redirect()->route('ue.contexts')->with('error', 'Failed to fetch registered UE contexts.');
+            return redirect()->route('ue_all_regi')->with('error', 'Failed to fetch registered UE contexts.');
         }
 
         return view('ue.contexts', compact('ueContexts'));
