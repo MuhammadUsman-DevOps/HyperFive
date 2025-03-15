@@ -28,7 +28,7 @@ class AuthenticationController extends Controller
         ]);
 
         if ($this->authService->login($request->email, $request->password)) {
-            return redirect()->route('dashboard')->with('success', 'Login successful!');
+            return redirect()->route('services.list')->with('success', 'Login successful!');
         }
 
         return redirect()->back()->with('error', 'Invalid credentials');
