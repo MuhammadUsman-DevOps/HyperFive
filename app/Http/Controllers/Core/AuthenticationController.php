@@ -27,7 +27,7 @@ class AuthenticationController extends Controller
             'password' => 'required',
         ]);
 
-        if ($this->authService->login($request->username, $request->password)) {
+        if ($this->authService->login($request->email, $request->password)) {
             return redirect()->route('dashboard')->with('success', 'Login successful!');
         }
 

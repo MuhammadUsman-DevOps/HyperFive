@@ -37,11 +37,11 @@
                         <!--begin::Input group-->
                         <div class="fv-row mb-10">
                             <!--begin::Label-->
-                            <label class="form-label fs-6 fw-bold text-dark">Email Address</label>
+                            <label class="form-label fs-6 fw-bold text-dark">Username</label>
                             <!--end::Label-->
                             <!--begin::Input-->
                             <input class="form-control form-control-lg form-control-solid" type="text" name="email"
-                                   autocomplete="off"/>
+                                   autocomplete="off" id="email"/>
                             <!--end::Input-->
                         </div>
                         <!--end::Input group-->
