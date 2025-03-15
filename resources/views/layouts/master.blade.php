@@ -108,6 +108,27 @@
                                     <span class="menu-title">Dashboard</span>
                                 </a>
                             </div>
+                            <div class="menu-item ">
+                                <a class="menu-link {{ Route::currentRouteName() == 'subscribers' ? 'active' : '' }} "
+                                   href="{{ route("subscribers") }}">
+                                    <span class="menu-icon">
+                                    <span class="svg-icon svg-color svg-icon-2">
+                                        <!-- https://feathericons.dev/?search=grid&iconset=feather -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                                             height="24" class="main-grid-item-icon"
+                                             fill="none" stroke="currentColor" stroke-linecap="round"
+                                             stroke-linejoin="round" stroke-width="2">
+                                          <rect height="7" width="7" x="3" y="3"/>
+                                          <rect height="7" width="7" x="14" y="3"/>
+                                          <rect height="7" width="7" x="14" y="14"/>
+                                          <rect height="7" width="7" x="3" y="14"/>
+                                        </svg>
+
+                                    </span>
+                                </span>
+                                    <span class="menu-title">Subscribers</span>
+                                </a>
+                            </div>
 
                             <div class="menu-item ">
                                 @php
@@ -257,7 +278,7 @@
             @show
             <!--begin::Footer-->
             <div class="aside-footer flex-column-auto pt-5 pb-7 px-5" id="kt_aside_footer">
-                <a class="btn btn-custom btn-white w-100" href="">
+                <a class="btn btn-custom btn-white w-100" href="{{ route("logout") }}">
 
                     <!--begin::Svg Icon | path: icons/duotune/general/gen005.svg-->
                     <span class="svg-icon svg-icon-2 text-danger">
