@@ -9,9 +9,7 @@
     <!--begin::Post-->
     <div class="post d-flex flex-column-fluid" id="kt_post">
         <!--begin::Container-->
-        <div id="kt_content_container" class="container-fluid h-100">
-            <div class="row ">
-                <div class="col-xl-12 col-lg-12 col-md-12  col-sm-12 d-flex">
+        <div id="kt_content_container" class="container-fluid">
                     <h2 class="mb-4">All Subscribers</h2>
 
                     @if(session('error'))
@@ -38,6 +36,5 @@
                     </table>
                 </div>
             </div>
-        </div>
-    </div>
+
 @endsection

@@ -20,7 +20,7 @@ Route::get('/logout', [AuthenticationController::class, 'logout'])->name('logout
 
 
 Route::group(["prefix" => "ue/"], function () {
-    Route::get('pdu-session-info', [UEController::class, 'getPduSessionInfo'])->name('ue_pdu_session_info');
+    Route::get('pdu-session-info/{smContextRef}', [UEController::class, 'getPduSessionInfo'])->name('ue_pdu_session_info');
     Route::get('registered-ue-context/{supi}', [UEController::class, 'getRegisteredUEContext'])->name('ue_registered_ue_context');
     Route::get('registered-ue-contexts', [UEController::class, 'getAllRegisteredUEContexts'])->name('ue_all_registered_ue_context');
     Route::get('charging-data', [UEController::class, 'getChargingData'])->name('ue_charging_data');

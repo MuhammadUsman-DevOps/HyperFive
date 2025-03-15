@@ -92,7 +92,7 @@ class UEService
         try {
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
-                'Token' => $token,
+                'token' => $token,
             ])->get("{$this->baseUrl}/api/registered-ue-context");
 
             if ($response->successful()) {
