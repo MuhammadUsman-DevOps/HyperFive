@@ -33,7 +33,7 @@ class SubscriberController extends Controller
             return redirect()->route('subscribers')->with('error', 'Subscriber not found.');
         }
 
-        return view('subscriber_detail', compact('subscriber'));
+        return view('core.subscriber.subscriber_detail', compact('subscriber'));
     }
 
 

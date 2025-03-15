@@ -1,36 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subscribers</title>
-</head>
-<body>
-<h2>Subscriber List</h2>
+@extends('layouts.master')
+@section('title', 'All Registered UE Context')
+@section('extra_styles')
 
-@if(session('error'))
-    <p style="color: red;">{{ session('error') }}</p>
-@endif
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection('extra_styles')
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>PLMN ID</th>
-        <th>UE ID</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach($subscribers as $subscriber)
-        <tr>
-            <td>{{ $subscriber['plmnID'] }}</td>
-            <td>{{ $subscriber['ueId'] }}</td>
-        </tr>
-    @endforeach
-    </tbody>
-</table>
+@section('main_content')
+    <!--begin::Post-->
+    <div class="post d-flex flex-column-fluid" id="kt_post">
+        <!--begin::Container-->
+        <div id="kt_content_container" class="container-fluid h-100">
+            <div class="row ">
+                <div class="col-xl-12 col-lg-12 col-md-12  col-sm-12 d-flex">
+                    <h2 class="mb-4">All Subscribers</h2>
 
-<br>
-<a href="{{ route('dashboard') }}">Back to Dashboard</a>
-<a href="{{ route('logout') }}">Logout</a>
-</body>
-</html>
+                    @if(session('error'))
+                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    @endif
+
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>PLMN ID</th>
+                            <th>UE ID</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($subscribers as $index => $subscriber)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $subscriber['plmnID'] }}</td>
+                                <td>{{ $subscriber['ueId'] }}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

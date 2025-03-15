@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Core\AuthenticationController;
 use App\Http\Controllers\Core\SubscriberController;
+use App\Http\Controllers\Core\UEController;
+use App\Http\Controllers\Core\UserController;
 use App\Http\Controllers\Docker\ServicesController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +17,35 @@ Route::get('/logout', [AuthenticationController::class, 'logout'])->name('logout
 Route::get('/subscribers', [SubscriberController::class, 'index'])->name('subscribers')->middleware('auth.session');
 Route::get('/subscribers/{ueId}/{plmnId}', [SubscriberController::class, 'show'])->name('subscriber.detail');
 
+
+
+Route::group(["prefix" => "ue/"], function () {
+    Route::get('pdu-session-info', [UEController::class, 'getPduSessionInfo'])->name('ue_pdu_session_info');
+    Route::get('registered-ue-context/{supi}', [UEController::class, 'getRegisteredUEContext'])->name('ue_registered_ue_context');
+    Route::get('registered-ue-contexts', [UEController::class, 'getAllRegisteredUEContexts'])->name('ue_all_registered_ue_context');
+    Route::get('charging-data', [UEController::class, 'getChargingData'])->name('ue_charging_data');
+    Route::get('charging-records', [UEController::class, 'getChargingRecords'])->name('ue_charging_records');
+});
+
+
+Route::group(["prefix" => "subscribers/"], function () {
+
+    Route::get('/', [SubscriberController::class, 'getAllSubscribers'])->name('subscribers');
+    Route::get('{ueId}/{plmnId}', [SubscriberController::class, 'getSubscriber'])->name('get_subscriber');
+    Route::post('add', [SubscriberController::class, 'addSubscriber'])->name('add_subscriber');
+    Route::post('update', [SubscriberController::class, 'updateSubscriber'])->name('update_subscriber');
+    Route::get('delete', [SubscriberController::class, 'deleteSubscriber'])->name('delete_subscriber');
+
+});
+
+Route::group(["prefix"=>"users"], function () {
+    Route::get('/', [UserController::class, 'getUsers'])->name('all_users');
+    Route::get('/{tenantId}/{userId}', [UserController::class, 'getUser'])->name('get_user');
+    Route::get('add', [UserController::class, 'showCreateUserForm'])->name('add_user');
+    Route::get('delete', [UserController::class, 'deleteUser'])->name('delete_user');
+    Route::post('add', [UserController::class, 'createUser'])->name('create_user');
+    Route::post('update', [UserController::class, 'updateUser'])->name('update_user');
+});
 Route::group(["prefix" => "hyper-five/"], function () {
     //Services URLs
     Route::get('services', [ServicesController::class, 'listServices'])->name('services.list');
