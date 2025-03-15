@@ -29,9 +29,13 @@
                         @foreach($subscribers as $index => $subscriber)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $subscriber['plmnID'] }}</td>
+                                <td>{{ $subscriber['plmnId'] }}</td>
                                 <td>{{ $subscriber['ueId'] }}</td>
-                                <td><a href="{{ round("get_subscriber", ["ueId"=>$subscriber["ueId"],"plmnID"=>$subscriber["plmnID"]]) }}" class="btn btn-sm btn-primary">View</a> </td>
+                                <td>
+                                    <a href="{{ route('get_subscriber', ['ueId' => $subscriber['ueId'], 'plmnId' => $subscriber['plmnId']]) }}" class="btn btn-sm btn-primary">
+                                        View
+                                    </a>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
