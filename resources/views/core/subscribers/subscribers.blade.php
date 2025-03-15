@@ -22,6 +22,7 @@
                             <th>#</th>
                             <th>PLMN ID</th>
                             <th>UE ID</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -30,6 +31,7 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $subscriber['plmnID'] }}</td>
                                 <td>{{ $subscriber['ueId'] }}</td>
+                                <td><a href="{{ round("get_subscriber", ["ueId"=>$subscriber["ueId"],"plmnID"=>$subscriber["plmnID"]]) }}" class="btn btn-sm btn-primary">View</a> </td>
                             </tr>
                         @endforeach
                         </tbody>
