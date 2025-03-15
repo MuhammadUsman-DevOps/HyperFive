@@ -14,8 +14,8 @@ Route::get('/login', [AuthenticationController::class, 'showLoginForm'])->name('
 Route::post('/login', [AuthenticationController::class, 'login'])->name('login.submit');
 Route::get('/logout', [AuthenticationController::class, 'logout'])->name('logout');
 
-Route::get('/subscribers', [SubscriberController::class, 'index'])->name('subscribers')->middleware('auth.session');
-Route::get('/subscribers/{ueId}/{plmnId}', [SubscriberController::class, 'show'])->name('subscriber.detail');
+//Route::get('/subscribers', [SubscriberController::class, 'index'])->name('subscribers')->middleware('auth.session');
+//Route::get('/subscribers/{ueId}/{plmnId}', [SubscriberController::class, 'show'])->name('subscriber.detail');
 
 
 
