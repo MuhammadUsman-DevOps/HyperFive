@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use http\Client;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 
@@ -28,6 +29,19 @@ class AuthenticationService
         }
 
         return false; // Login failed
+
+
+        $client = new Client();
+        $headers = [
+            'Content-Type' => 'application/json'
+        ];
+        $body = '{
+  "username": "admin",
+  "password": "free5gc"
+}';
+        $request = new Request('POST', 'http://192.168.11.131:5000/api/login', $headers, $body);
+        $res = $client->sendAsync($request)->wait();
+        echo $res->getBody();
     }
 
     public function logout()
