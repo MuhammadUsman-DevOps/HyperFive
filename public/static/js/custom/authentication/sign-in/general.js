@@ -11,8 +11,8 @@ var KTSigninGeneral = function() {
                 fields: {
                     email: {
                         validators: {
-                            notEmpty: { message: "Email address is required" },
-                            emailAddress: { message: "The value is not a valid email address" }
+                            notEmpty: { message: "Username is required" },
+
                         }
                     },
                     password: {
