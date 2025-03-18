@@ -11,7 +11,7 @@
         <!--begin::Container-->
         <div id="kt_content_container" class="container-fluid">
 
-            <h2>Subscriber Details</h2>
+            <h2 class="mb-5">Subscriber Details</h2>
 
             <!-- Authentication Subscription -->
             <h3>Authentication Subscription</h3>
@@ -20,13 +20,13 @@
             <p><strong>Authentication Method:</strong> {{ $subscriber['AuthenticationSubscription']['authenticationMethod'] }}</p>
             <p><strong>Permanent Key:</strong> {{ $subscriber['AuthenticationSubscription']['permanentKey']['permanentKeyValue'] }}</p>
             <p><strong>Sequence Number:</strong> {{ $subscriber['AuthenticationSubscription']['sequenceNumber'] }}</p>
-
+<hr>
             <!-- Access and Mobility Subscription Data -->
             <h3>Access and Mobility Subscription Data</h3>
             <p><strong>GPSIS:</strong> {{ implode(', ', $subscriber['AccessAndMobilitySubscriptionData']['gpsis']) }}</p>
             <p><strong>Subscribed UE AMBR (Uplink):</strong> {{ $subscriber['AccessAndMobilitySubscriptionData']['subscribedUeAmbr']['uplink'] }}</p>
             <p><strong>Subscribed UE AMBR (Downlink):</strong> {{ $subscriber['AccessAndMobilitySubscriptionData']['subscribedUeAmbr']['downlink'] }}</p>
-
+            <hr>
             <!-- NSSAI -->
             <h3>Network Slice Selection Assistance Information</h3>
             <ul>
@@ -34,7 +34,7 @@
                     <li>SST: {{ $nssai['sst'] }}, SD: {{ $nssai['sd'] }}</li>
                 @endforeach
             </ul>
-
+            <hr>
             <!-- Session Management Subscription Data -->
             <h3>Session Management Subscription Data</h3>
             @foreach ($subscriber['SessionManagementSubscriptionData'] as $session)
@@ -49,7 +49,7 @@
                     <p><strong>Allowed Session Types:</strong> {{ implode(', ', $config['pduSessionTypes']['allowedSessionTypes']) }}</p>
                 @endforeach
             @endforeach
-
+            <hr>
             <!-- QoS Flows -->
             <h3>QoS Flows</h3>
             <table class="table table-bordered">
@@ -80,7 +80,7 @@
                 @endforeach
                 </tbody>
             </table>
-
+            <hr>
             <!-- Charging Data -->
             <h3>Charging Data</h3>
             <table class="table table-bordered">
