@@ -95,16 +95,27 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach ($subscriber['ChargingDatas'] as $charging)
+                @if(isset($subscriber['ChargingDatas']) && is_array($subscriber['ChargingDatas']))
+                    @php $seen = []; @endphp
+                    @foreach ($subscriber['ChargingDatas'] as $index => $charging)
+                        @if(!in_array($charging['snssai'] . $charging['dnn'] . $charging['chargingMethod'], $seen))
+                            @php $seen[] = $charging['snssai'] . $charging['dnn'] . $charging['chargingMethod']; @endphp
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $charging['snssai'] }}</td>
+                                <td>{{ $charging['dnn'] ?: 'N/A' }}</td>
+                                <td>{{ $charging['chargingMethod'] }}</td>
+                                <td>{{ $charging['quota'] }}</td>
+                                <td>{{ $charging['unitCost'] }}</td>
+                                <td>{{ $charging['ueId'] }}</td>
+                            </tr>
+                        @endif
+                    @endforeach
+                @else
                     <tr>
-                        <td>{{ $charging['snssai'] }}</td>
-                        <td>{{ $charging['dnn'] }}</td>
-                        <td>{{ $charging['chargingMethod'] }}</td>
-                        <td>{{ $charging['quota'] }}</td>
-                        <td>{{ $charging['unitCost'] }}</td>
-                        <td>{{ $charging['ueId'] }}</td>
+                        <td colspan="7" class="text-center">No Charging Data Available</td>
                     </tr>
-                @endforeach
+                @endif
                 </tbody>
             </table>
 
