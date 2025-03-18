@@ -23,7 +23,7 @@
                         <!--begin::Toolbar-->
                         <div class="d-flex justify-content-end" >
                             <!--begin::Add Employee-->
-                            <a href="{{ route("create_new_employee") }}"  class="btn btn-primary" >Add New Employee</a>
+                            <a href="{{ route("add_users") }}"  class="btn btn-primary" >Add New User</a>
                             <!--end::Add Employee-->
                         </div>
                         <!--end::Toolbar-->
