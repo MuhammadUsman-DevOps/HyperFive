@@ -35,7 +35,8 @@
                     <table id="kt_datatable_example_1" class="table table-striped table-row-bordered gy-5 gs-7">
                         <thead>
                         <tr class="fw-bolder fs-6 text-gray-800 px-7">
-                            <th class="min-w-100px">Email Address</th>
+                            <th class="min-w-100px">Tenant</th>
+                            <th class="min-w-100px">Users</th>
                             <th class="min-w-100px text-end">Action</th>
                         </tr>
                         </thead>
@@ -43,6 +44,7 @@
                         @foreach($tenants as $tenant)
                             <tr>
                                 <td>{{ $tenant["tenantName"] }}</td>
+                                <td><a href="{{ route("all_users", ["tenantId"=>$tenant["tenantId"]]) }}">view</a> </td>
 
                                 <td>
                                     <div class="d-flex justify-content-end flex-shrink-0">
