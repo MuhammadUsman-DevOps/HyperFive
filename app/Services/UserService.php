@@ -32,7 +32,7 @@ class UserService
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Token' => $token,
-            ])->post("{$this->baseUrl}/api/tenant/{$tenantId}/user/", $data);
+            ])->post("{$this->baseUrl}/api/tenant/{$tenantId}/user", $data);
 
             if ($response->successful()) {
                 return $response->json();

@@ -26,7 +26,7 @@ class UserController extends Controller
             'encryptedPassword' => 'required|string',
         ]);
 
-        $data = $request->only(['email', 'encryptedPassword']);
+        $data = $request->only(['email', 'encryptedPassword', 'tenantId']);
 
         $user = $this->userService->createUser($tenantId, $data);
 
@@ -70,11 +70,12 @@ class UserController extends Controller
     {
         $users = $this->userService->getUsers($tenantId);
 
+
         if (!$users) {
             return redirect()->route('users')->with('error', 'Failed to fetch users.');
         }
 
-        return view('core.users.users', compact('users'));
+        return view('core.users.users', ['users'=>$users,'tenantId'=>$tenantId]);
     }
 
     public function getUser($tenantId, $userId)
