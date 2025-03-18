@@ -68,7 +68,7 @@ class TenantController extends Controller
             return redirect()->route('tenants')->with('error', 'Failed to fetch tenants.');
         }
 
-        return view('tenants.index', compact('tenants'));
+        return view('core.tenants.tenants', compact('tenants'));
     }
 
 

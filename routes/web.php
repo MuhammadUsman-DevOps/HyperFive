@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Core\AuthenticationController;
 use App\Http\Controllers\Core\SubscriberController;
+use App\Http\Controllers\Core\TenantController;
 use App\Http\Controllers\Core\UEController;
 use App\Http\Controllers\Core\UserController;
 use App\Http\Controllers\Docker\ServicesController;
@@ -38,14 +39,25 @@ Route::group(["prefix" => "subscribers/"], function () {
 
 });
 
-Route::group(["prefix"=>"users"], function () {
-    Route::get('/', [UserController::class, 'getUsers'])->name('all_users');
-    Route::get('/{tenantId}/{userId}', [UserController::class, 'getUser'])->name('get_user');
+Route::group(["prefix"=>"users/"], function () {
+    Route::get('{tenantId}', [UserController::class, 'getUsers'])->name('all_users');
+    Route::get('{tenantId}/{userId}', [UserController::class, 'getUser'])->name('get_user');
     Route::get('add', [UserController::class, 'showCreateUserForm'])->name('add_user');
     Route::get('delete', [UserController::class, 'deleteUser'])->name('delete_user');
     Route::post('add', [UserController::class, 'createUser'])->name('create_user');
     Route::post('update', [UserController::class, 'updateUser'])->name('update_user');
 });
+
+
+Route::group(["prefix"=>"tenants/"], function () {
+    Route::get('', [TenantController::class, 'getAllTenants'])->name('all_tenants');
+    Route::get('{tenantId}/{userId}', [TenantController::class, 'getTenant'])->name('get_tenant');
+    Route::get('add', [TenantController::class, 'addTenant'])->name('add_tenant');
+    Route::get('delete', [TenantController::class, 'deleteTenant'])->name('delete_tenant');
+    Route::post('add', [TenantController::class, 'addTenant'])->name('create_tenant');
+    Route::post('update', [TenantController::class, 'updateTenant'])->name('update_tenant');
+});
+
 Route::group(["prefix" => "hyper-five/"], function () {
     //Services URLs
     Route::get('services', [ServicesController::class, 'listServices'])->name('services.list');
