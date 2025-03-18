@@ -74,7 +74,7 @@ class UserController extends Controller
             return redirect()->route('users')->with('error', 'Failed to fetch users.');
         }
 
-        return view('users.index', compact('users'));
+        return view('core.users.users', compact('users'));
     }
 
     public function getUser($tenantId, $userId)
