@@ -64,6 +64,10 @@ class SubscriberController extends Controller
         return redirect()->route('subscribers')->with('success', 'Subscriber added successfully.');
     }
 
+    public function showAddSubscriberForm()
+    {
+        return view('core.subscribers.add_subscriber');
+    }
     public function updateSubscriber(Request $request, $ueId, $plmnId)
     {
         $request->validate([
