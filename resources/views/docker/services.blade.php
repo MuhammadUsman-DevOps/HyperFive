@@ -25,6 +25,10 @@
                 @csrf
                 <button type="submit" class="btn btn-success">Start Engine</button>
             </form>
+            <form action="{{ route('stop_engine') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-danger">Stop Engine</button>
+            </form>
 
             @if($services)
                 <div class="row mt-5">
