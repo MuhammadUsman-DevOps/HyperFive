@@ -699,5 +699,19 @@ logger: # log output setting
         }
     }
 
+    public function stopFullSetup()
+    {
+        $host = '192.168.11.131';
+        $user = 'imran';
+        $command = 'cd /home/imran/free5gc/free5gc-compose/ && docker-compose down';
+
+        try {
+            $output = shell_exec("ssh {$user}@{$host} '{$command}' 2>&1");
+            return redirect()->route('services.list')->with('success', 'Docker setup stopped successfully! Output: ' . nl2br($output));
+        } catch (\Exception $e) {
+            return redirect()->route('services.list')->with('error', 'Failed to stop Docker: ' . $e->getMessage());
+        }
+    }
+
 
 }
