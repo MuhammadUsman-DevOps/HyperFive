@@ -19,7 +19,7 @@ class UserController extends Controller
     public function showCreateUserForm(Request $request){
         return view('core.users.create');
     }
-    public function createUser(Request $request, $tenantId)
+    public function createUser(Request $request)
     {
         $request->validate([
             'email' => 'required',
@@ -27,6 +27,7 @@ class UserController extends Controller
         ]);
 
         $data = $request->only(['email', 'encryptedPassword', 'tenantId']);
+        $tenantId = $data['tenantId'];
 
         $user = $this->userService->createUser($tenantId, $data);
 
@@ -49,14 +50,22 @@ class UserController extends Controller
     }
 
 
-    public function updateUser(Request $request, $tenantId, $userId)
+    public function updateUser(Request $request)
     {
         $request->validate([
-            'email' => 'required',
-            'encryptedPassword' => 'required|string',
+            'email' => 'required|email',
+            'encryptedPassword' => 'nullable|string|min:6',
         ]);
 
-        $data = $request->only(['email', 'encryptedPassword']);
+        $data = $request->only(['email', 'tenantId', 'userId']);
+        $tenantId = $data['tenantId'];
+        $userId = $data['userId'];
+
+        if ($request->filled('encryptedPassword')) {
+            $data['encryptedPassword'] = bcrypt($request->encryptedPassword);
+        } else {
+            unset($data['encryptedPassword']);
+        }
 
         $user = $this->userService->updateUser($tenantId, $userId, $data);
 

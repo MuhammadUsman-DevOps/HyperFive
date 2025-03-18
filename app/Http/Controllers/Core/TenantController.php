@@ -54,10 +54,10 @@ class TenantController extends Controller
         $tenant = $this->tenantService->updateTenant($tenantId, $data);
 
         if (!$tenant) {
-            return redirect()->route('tenants')->with('error', 'Failed to update tenant.');
+            return redirect()->route('all_tenants')->with('error', 'Failed to update tenant.');
         }
 
-        return redirect()->route('tenants')->with('success', 'Tenant updated successfully.');
+        return redirect()->route('all_tenants')->with('success', 'Tenant updated successfully.');
     }
 
     public function getAllTenants()
@@ -65,7 +65,7 @@ class TenantController extends Controller
         $tenants = $this->tenantService->getAllTenants();
 
         if (!$tenants) {
-            return redirect()->route('tenants')->with('error', 'Failed to fetch tenants.');
+            return redirect()->route('services.list')->with('error', 'Failed to fetch tenants.');
         }
 
         return view('core.tenants.tenants', compact('tenants'));
