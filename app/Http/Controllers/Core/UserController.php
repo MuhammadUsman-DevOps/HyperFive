@@ -43,7 +43,7 @@ class UserController extends Controller
         $deleted = $this->userService->deleteUser($tenantId, $userId);
 
         if (!$deleted) {
-            return redirect()->route('users')->with('error', 'Failed to delete user.');
+            return redirect()->route('all_users', $tenantId)->with('error', 'Failed to delete user.');
         }
 
         return redirect()->route('users')->with('success', 'User deleted successfully.');
@@ -70,10 +70,10 @@ class UserController extends Controller
         $user = $this->userService->updateUser($tenantId, $userId, $data);
 
         if (!$user) {
-            return redirect()->route('users')->with('error', 'Failed to update user.');
+            return redirect()->route('all_users',$tenantId)->with('error', 'Failed to update user.');
         }
 
-        return redirect()->route('users')->with('success', 'User updated successfully.');
+        return redirect()->route('all_users',$tenantId)->with('success', 'User updated successfully.');
     }
     public function getUsers($tenantId)
     {
