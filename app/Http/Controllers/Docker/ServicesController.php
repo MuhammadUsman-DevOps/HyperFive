@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\SSHService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Process;
 use phpseclib3\Net\SSH2;
 use Symfony\Component\Yaml\Yaml;
 
@@ -680,5 +681,23 @@ logger: # log output setting
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+
+
+
+    public function startFullSetup()
+    {
+        $host = '192.168.11.131';
+        $user = 'imran';
+        $command = 'cd /home/imran/free5gc/free5gc-compose/ && docker-compose up -d';
+
+        try {
+            $output = shell_exec("ssh {$user}@{$host} '{$command}' 2>&1");
+            return redirect()->route('services.list')->with('success', 'Docker setup started successfully! Output: ' . nl2br($output));
+        } catch (\Exception $e) {
+            return redirect()->route('services.list')->with('error', 'Failed to start Docker: ' . $e->getMessage());
+        }
+    }
+
 
 }
