@@ -11,7 +11,7 @@
         <!--begin::Container-->
         <div id="kt_content_container" class="container-fluid">
             <h2>Create Subscriber</h2>
-            <form action="{{ route('subscriber.store') }}" method="POST">
+            <form action="{{ route('add_subscriber') }}" method="POST">
                 @csrf
 
                 {{-- Basic Subscriber Information --}}
