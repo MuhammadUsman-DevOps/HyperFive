@@ -31,7 +31,7 @@ class UserController extends Controller
         $user = $this->userService->createUser($tenantId, $data);
 
         if (!$user) {
-            return redirect()->route('users')->with('error', 'Failed to create user.');
+            return redirect()->route('all_tenants')->with('error', 'Failed to create user.');
         }
 
         return redirect()->route('users')->with('success', 'User created successfully.');

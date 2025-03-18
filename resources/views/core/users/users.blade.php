@@ -22,9 +22,9 @@
                     <div class="card-toolbar">
                         <!--begin::Toolbar-->
                         <div class="d-flex justify-content-end" >
-                            <!--begin::Add Employee-->
-                            <a href="{{ route("add_users") }}"  class="btn btn-primary" >Add New User</a>
-                            <!--end::Add Employee-->
+                            <!--begin::Add users-->
+                            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">Add New User</a>
+                            <!--end::Add users-->
                         </div>
                         <!--end::Toolbar-->
                     </div>
@@ -83,4 +83,56 @@
         <!--end::Container-->
     </div>
     <!--end::Post-->
+
+
+    <!-- Add User Modal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addUserForm" action="{{ route('create_user') }}" method="POST" onsubmit="return validateForm()">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="encryptedPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="encryptedPassword" name="encryptedPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+                        <div class="alert alert-danger d-none" id="errorMessage"></div>
+                        <button type="submit" class="btn btn-primary w-100">Add User</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+@endsection
+
+@section("extra_scripts")
+    <script>
+        function validateForm() {
+            let password = document.getElementById('encryptedPassword').value;
+            let confirmPassword = document.getElementById('confirmPassword').value;
+            let errorMessage = document.getElementById('errorMessage');
+
+            if (password !== confirmPassword) {
+                errorMessage.textContent = 'Passwords do not match';
+                errorMessage.classList.remove('d-none');
+                return false;
+            }
+            return true;
+        }
+    </script>
+
 @endsection
