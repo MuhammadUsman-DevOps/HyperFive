@@ -3,7 +3,7 @@
 <!--begin::Head-->
 <head>
     <base href="">
-    <title>@yield('title') -Hyper Five</title>
+    <title>@yield('title') -Korbiant Systems</title>
     <meta charset="utf-8"/>
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
@@ -339,7 +339,7 @@
                         <div class="d-flex align-items-stretch" id="kt_header_nav">
                             <div class="d-flex align-items-center ms-1 ms-lg-3">
                                 <a href="#" class="fs-2 fw-bold">
-                                  {{ $page ?? "Hyper Five" }}
+                                  {{ $page ?? "Korbiant Systems" }}
                                 </a>
                             </div>
                         </div>
