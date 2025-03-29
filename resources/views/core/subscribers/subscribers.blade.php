@@ -32,6 +32,7 @@
                                 <td>{{ $subscriber['plmnID'] }}</td>
                                 <td>{{ $subscriber['ueId'] }}</td>
                                 <td><a href="{{ route("get_subscriber", ["ueId"=>$subscriber["ueId"],"plmnId"=>$subscriber["plmnID"]]) }}" class="btn btn-sm btn-primary">View</a> </td>
+
                             </tr>
                         @endforeach
                         </tbody>

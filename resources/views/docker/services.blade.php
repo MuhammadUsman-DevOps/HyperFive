@@ -21,14 +21,22 @@
     <div class="post d-flex flex-column-fluid" id="kt_post">
         <!--begin::Container-->
         <div id="kt_content_container" class="container-fluid h-100">
-            <form action="{{ route('start_engine') }}" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-success">Start Engine</button>
-            </form>
+        <div class="d-flex justify-content-start">
+            @if($services)
             <form action="{{ route('stop_engine') }}" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-danger">Stop Engine</button>
-            </form>
+                    @csrf
+                    <button type="submit" class="ms-2 me-2 btn btn-danger">Stop Engine</button>
+                </form>
+            @else
+            <form action="{{ route('start_engine') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-success">Start Engine</button>
+                </form>
+            @endif
+               
+                
+            </div>
+
 
             @if($services)
                 <div class="row mt-5">

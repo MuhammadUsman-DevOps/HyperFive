@@ -63,7 +63,7 @@ Route::group(["prefix" => "hyper-five/"], function () {
     //Services URLs
     Route::get('services', [ServicesController::class, 'listServices'])->name('services.list');
     Route::post('start-engine', [ServicesController::class, 'startFullSetup'])->name('start_engine');
-    Route::post('stop-engine', [ServicesController::class, 'stolSetup'])->name('stop_engine');
+    Route::post('stop-engine', [ServicesController::class, 'stopFullSetup'])->name('stop_engine');
     Route::get('config', [ServicesController::class, 'getConfigFromVM'])->name('config.list');
     Route::get('config/amf', [ServicesController::class, 'AMFConfigs'])->name('amf_configs');
     Route::get('config/smf', [ServicesController::class, 'SMFConfigs'])->name('smf_configs');

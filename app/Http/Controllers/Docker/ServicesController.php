@@ -21,307 +21,97 @@ class ServicesController extends Controller
         $this->dockerApiUrl = 'http://192.168.11.131:2375/v1.43';
     }
 
-    public function listServices()
-    {
-        try {
-//             Fetch services from Docker API
+//     public function listServices()
+//     {
+//         try {
+// //             Fetch services from Docker API
 
-$response = Http::get("{$this->dockerApiUrl}/containers/json", [
-  'all' => true,
-  'filters' => json_encode([
+// $response = Http::get("{$this->dockerApiUrl}/containers/json", [
+//   'all' => true,
+//   'filters' => json_encode([
+//                 'label' => ['com.docker.compose.project=free5gc-compose'], // Filter by project label
+//             ]),
+// ]);
+
+//             if ($response->ok()) {
+//                 $servicesJson = $response->json();
+
+
+//                 $processedServices = array_map(function ($service) {
+//                     return [
+//                         'id' => $service['Id'] ?? 'N/A',
+//                         'name' => $service['Names'][0] ?? 'N/A',
+//                         'status' => $service['Status'] ?? 'Unknown',
+//                         'state' => $service['State'] ?? 'Unknown',
+//                         'ip' => $service["NetworkSettings"]["Networks"]["free5gc-compose_privnet"]['IPAddress'] ?? 'N/A',
+//                     ];
+//                 }, $servicesJson);
+
+
+//                 return view('docker.services', ["services" => $processedServices]);
+//             }
+
+//             return response()->json(['error' => 'Failed to fetch services'], 500);
+
+//         } catch (\Exception $e) {
+//             return response()->json(['error' => $e->getMessage()], 500);
+//         }
+//     }
+
+public function listServices()
+{
+    try {
+        // Fetch services from Docker API
+        $response = Http::get("{$this->dockerApiUrl}/containers/json", [
+            'all' => true,
+            'filters' => json_encode([
                 'label' => ['com.docker.compose.project=free5gc-compose'], // Filter by project label
             ]),
-]);
+        ]);
 
-            if ($response->ok()) {
-                $servicesJson = $response->json();
+        if ($response->ok()) {
+            $servicesJson = $response->json();
 
+            // Define the required services in the desired order
+            $requiredServices = ['amf', 'smf', 'upf', 'udr', 'chf', 'pcf', 'nrf', 'ausf', 'nssf'];
 
-                $processedServices = array_map(function ($service) {
-                    return [
-                        'id' => $service['Id'] ?? 'N/A',
-                        'name' => $service['Names'][0] ?? 'N/A',
-                        'status' => $service['Status'] ?? 'Unknown',
-                        'state' => $service['State'] ?? 'Unknown',
-                        'ip' => $service["NetworkSettings"]["Networks"]["free5gc-compose_privnet"]['IPAddress'] ?? 'N/A',
-                    ];
-                }, $servicesJson);
-
-
-                return view('docker.services', ["services" => $processedServices]);
+            // Filter and map services
+            $processedServices = [];
+            foreach ($requiredServices as $serviceName) {
+                foreach ($servicesJson as $service) {
+                    if (strpos($service['Names'][0] ?? '', $serviceName) !== false) {
+                        $processedServices[] = [
+                            'id' => $service['Id'] ?? 'N/A',
+                            'name' => $serviceName, // Ensure name matches required order
+                            'status' => $service['Status'] ?? 'Unknown',
+                            'state' => $service['State'] ?? 'Unknown',
+                            'ip' => $service["NetworkSettings"]["Networks"]["free5gc-compose_privnet"]['IPAddress'] ?? 'N/A',
+                        ];
+                        break; // Move to next required service
+                    }
+                }
             }
 
-            return response()->json(['error' => 'Failed to fetch services'], 500);
-
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return view('docker.services', ["services" => $processedServices]);
         }
-    }
 
+        return response()->json(['error' => 'Failed to fetch services'], 500);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
 
     public function getConfigFromVM()
     {
         try {
-            $ssh = new SSH2('192.168.11.129');
-//        if (!$ssh->login('imran', 'imran')) {
-//            return response()->json(['success' => false, 'message' => 'Login failed'], 401);
-//        }
-//
-//        // Path to the YAML file on the VM
-//        $filePath = '/home/imran/free5gc/free5gc-compose/config/amfcfg.yaml';
-//        $content = $ssh->exec("cat $filePath");
-//          // dd($content);s
-//
-            $content = "info:
-
-  version: 1.0.9
-
-  description: AMF initial local configuration
-
-
-configuration:
-
-  amfName: AMF # the name of this AMF
-
-  ngapIpList:  # the IP list of N2 interfaces on this AMF
-
-    - amf.free5gc.org
-
-  ngapPort: 38412 # the SCTP port listened by NGAP
-
-  sbi: # Service-based interface information
-
-    scheme: http # the protocol for sbi (http or https)
-
-    registerIPv4: 0.0.0.0 # IP used to register to NRF
-
-    bindingIPv4: 0.0.0.0  # IP used to bind the service
-
-    port: 8000 # port used to bind the service
-
-    tls: # the local path of TLS key
-
-      pem: cert/amf.pem # AMF TLS Certificate
-
-      key: cert/amf.key # AMF TLS Private key
-
-  serviceNameList: # the SBI services provided by this AMF, refer to TS 29.518
-
-    - namf-comm # Namf_Communication service
-
-    - namf-evts # Namf_EventExposure service
-
-    - namf-mt   # Namf_MT service
-
-    - namf-loc  # Namf_Location service
-
-    - namf-oam  # OAM service
-
-  servedGuamiList: # Guami (Globally Unique AMF ID) list supported by this AMF
-
-    # <GUAMI> = <MCC><MNC><AMF ID>
-
-    - plmnId: # Public Land Mobile Network ID, <PLMN ID> = <MCC><MNC>
-
-        mcc: 208 # Mobile Country Code (3 digits string, digit: 0~9)
-
-        mnc: 93 # Mobile Network Code (2 or 3 digits string, digit: 0~9)
-
-      amfId: cafe00 # AMF identifier (3 bytes hex string, range: 000000~FFFFFF)
-
-  supportTaiList:  # the TAI (Tracking Area Identifier) list supported by this AMF
-
-    - plmnId: # Public Land Mobile Network ID, <PLMN ID> = <MCC><MNC>
-
-        mcc: 208 # Mobile Country Code (3 digits string, digit: 0~9)
-
-        mnc: 93 # Mobile Network Code (2 or 3 digits string, digit: 0~9)
-
-      tac: 000001 # Tracking Area Code (3 bytes hex string, range: 000000~FFFFFF)
-
-  plmnSupportList: # the PLMNs (Public land mobile network) list supported by this AMF
-
-    - plmnId: # Public Land Mobile Network ID, <PLMN ID> = <MCC><MNC>
-
-        mcc: 208 # Mobile Country Code (3 digits string, digit: 0~9)
-
-        mnc: 93 # Mobile Network Code (2 or 3 digits string, digit: 0~9)
-
-      snssaiList: # the S-NSSAI (Single Network Slice Selection Assistance Information) list supported by this AMF
-
-        - sst: 1 # Slice/Service Type (uinteger, range: 0~255)
-
-          sd: 010203 # Slice Differentiator (3 bytes hex string, range: 000000~FFFFFF)
-
-        - sst: 1 # Slice/Service Type (uinteger, range: 0~255)
-
-          sd: 112233 # Slice Differentiator (3 bytes hex string, range: 000000~FFFFFF)
-
-  supportDnnList:  # the DNN (Data Network Name) list supported by this AMF
-
-    - internet
-
-  nrfUri: http://nrf.free5gc.org:8000 # a valid URI of NRF
-
-  nrfCertPem: cert/nrf.pem
-
-  security:  # NAS security parameters
-
-    integrityOrder: # the priority of integrity algorithms
-
-      - NIA2
-
-      # - NIA0
-
-    cipheringOrder: # the priority of ciphering algorithms
-
-      - NEA0
-
-      # - NEA2
-
-  networkName:  # the name of this core network
-
-    full: free5GC
-
-    short: free
-
-  ngapIE: # Optional NGAP IEs
-
-    mobilityRestrictionList: # Mobility Restriction List IE, refer to TS 38.413
-
-      enable: true # append this IE in related message or not
-
-    maskedIMEISV: # Masked IMEISV IE, refer to TS 38.413
-
-      enable: true # append this IE in related message or not
-
-    redirectionVoiceFallback: # Redirection Voice Fallback IE, refer to TS 38.413
-
-      enable: false # append this IE in related message or not
-
-  nasIE: # Optional NAS IEs
-
-    networkFeatureSupport5GS: # 5gs Network Feature Support IE, refer to TS 24.501
-
-      enable: true # append this IE in Registration accept or not
-
-      length: 1 # IE content length (uinteger, range: 1~3)
-
-      imsVoPS: 0 # IMS voice over PS session indicator (uinteger, range: 0~1)
-
-      emc: 0 # Emergency service support indicator for 3GPP access (uinteger, range: 0~3)
-
-      emf: 0 # Emergency service fallback indicator for 3GPP access (uinteger, range: 0~3)
-
-      iwkN26: 0 # Interworking without N26 interface indicator (uinteger, range: 0~1)
-
-      mpsi: 0 # MPS indicator (uinteger, range: 0~1)
-
-      emcN3: 0 # Emergency service support indicator for Non-3GPP access (uinteger, range: 0~1)
-
-      mcsi: 0 # MCS indicator (uinteger, range: 0~1)
-
-  t3502Value: 720  # timer value (seconds) at UE side
-
-  t3512Value: 3600 # timer value (seconds) at UE side
-
-  non3gppDeregTimerValue: 3240 # timer value (seconds) at UE side
-
-  # retransmission timer for paging message
-
-  t3513:
-
-    enable: true     # true or false
-
-    expireTime: 6s   # default is 6 seconds
-
-    maxRetryTimes: 4 # the max number of retransmission
-
-  # retransmission timer for NAS Deregistration Request message
-
-  t3522:
-
-    enable: true     # true or false
-
-    expireTime: 6s   # default is 6 seconds
-
-    maxRetryTimes: 4 # the max number of retransmission
-
-  # retransmission timer for NAS Registration Accept message
-
-  t3550:
-
-    enable: true     # true or false
-
-    expireTime: 6s   # default is 6 seconds
-
-    maxRetryTimes: 4 # the max number of retransmission
-
-  # retransmission timer for NAS Configuration Update Command message
-
-  t3555:
-
-    enable: true     # true or false
-
-    expireTime: 6s   # default is 6 seconds
-
-    maxRetryTimes: 4 # the max number of retransmission
-
-  # retransmission timer for NAS Authentication Request/Security Mode Command message
-
-  t3560:
-
-    enable: true     # true or false
-
-    expireTime: 6s   # default is 6 seconds
-
-    maxRetryTimes: 4 # the max number of retransmission
-
-  # retransmission timer for NAS Notification message
-
-  t3565:
-
-    enable: true     # true or false
-
-    expireTime: 6s   # default is 6 seconds
-
-    maxRetryTimes: 4 # the max number of retransmission
-
-  # retransmission timer for NAS Identity Request message
-
-  t3570:
-
-    enable: true     # true or false
-
-    expireTime: 6s   # default is 6 seconds
-
-    maxRetryTimes: 4 # the max number of retransmission
-
-  locality: area1 # Name of the location where a set of AMF, SMF, PCF and UPFs are located
-
-  sctp: # set the sctp server setting <optinal>, once this field is set, please also add maxInputStream, maxOsStream, maxAttempts, maxInitTimeOut
-
-    listenIP: 192.168.11.132
-
-    numOstreams: 3 # the maximum out streams of each sctp connection
-
-    maxInstreams: 5 # the maximum in streams of each sctp connection
-
-    maxAttempts: 2 # the maximum attempts of each sctp connection
-
-    maxInitTimeout: 2 # the maximum init timeout of each sctp connection
-
-  defaultUECtxReq: false # the default value of UE Context Request to decide when triggering Initial Context Setup procedure
-
-
-logger: # log output setting
-
-  enable: true # true or false
-
-  level: info # how detailed to output, value: trace, debug, info, warn, error, fatal, panic
-
-  reportCaller: false # enable the caller report or not, value: true or false
-";
+            $ssh = new SSH2('192.168.11.131');
+       if (!$ssh->login('imran', 'imran')) {
+           return response()->json(['success' => false, 'message' => 'Login failed'], 401);
+       }
+
+       // Path to the YAML file on the VM
+       $filePath = '/home/imran/free5gc/free5gc-compose/config/amfcfg.yaml';
+        $content = $ssh->exec("cat $filePath");
             $yamlContent = Yaml::parse($content);
             // dd($yamlContent);
             // Optional: Parse YAML if needed
@@ -507,7 +297,7 @@ logger: # log output setting
 
             $yamlContent = Yaml::parse($content);
 
-            return view('docker.config', ['yamlContent' => $yamlContent, "page"=>"System Configuration"]);
+            return view('docker.system_config', ['yamlContent' => $yamlContent, "page"=>"System Configuration"]);
 
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
@@ -690,28 +480,33 @@ logger: # log output setting
         $host = '192.168.11.131';
         $user = 'imran';
         $command = 'cd /home/imran/free5gc/free5gc-compose/ && docker-compose up -d';
-
+    
         try {
-            $output = shell_exec("ssh {$user}@{$host} '{$command}' 2>&1");
-            return redirect()->route('services.list')->with('success', 'Docker setup started successfully! Output: ' . nl2br($output));
+            // Execute SSH command and capture output
+            $output = shell_exec("ssh -o StrictHostKeyChecking=no {$user}@{$host} \"{$command}\" 2>&1");
+    
+            return redirect()->route('services.list')->with('success', 'Docker started! Output:<br>' . nl2br($output));
         } catch (\Exception $e) {
-            return redirect()->route('services.list')->with('error', 'Failed to start Docker: ' . $e->getMessage());
+            return redirect()->route('services.list')->with('error', 'Failed: ' . $e->getMessage());
         }
     }
+    
 
     public function stopFullSetup()
     {
         $host = '192.168.11.131';
         $user = 'imran';
-        $command = 'cd /home/imran/free5gc/free5gc-compose/ && docker-compose down';
-
+        $command = "cd /home/imran/free5gc/free5gc-compose/ && docker-compose down";
+    
         try {
-            $output = shell_exec("ssh {$user}@{$host} '{$command}' 2>&1");
-            return redirect()->route('services.list')->with('success', 'Docker setup stopped successfully! Output: ' . nl2br($output));
+            // Execute SSH command properly with escaped double quotes
+            $output = shell_exec("ssh -o StrictHostKeyChecking=no {$user}@{$host} \"{$command}\" 2>&1");
+    
+            return redirect()->route('services.list')->with('success', 'Docker stopped! Output:<br>' . nl2br($output));
         } catch (\Exception $e) {
-            return redirect()->route('services.list')->with('error', 'Failed to stop Docker: ' . $e->getMessage());
+            return redirect()->route('services.list')->with('error', 'Failed: ' . $e->getMessage());
         }
     }
-
+    
 
 }
