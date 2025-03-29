@@ -12,7 +12,7 @@ class SSHService
     public function __construct()
     {
 //        $this->host = config('ssh.host'); // Retrieve the host from the config file
-        $this->host = '192.168.11.129';
+        $this->host = '192.168.11.131';
         $this->ssh = new SSH2($this->host);
         if (!$this->ssh->login('imran', 'imran')) {
             throw new \Exception('SSH login failed');
