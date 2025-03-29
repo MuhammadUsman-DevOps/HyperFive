@@ -34,6 +34,7 @@ Route::group(["prefix" => "subscribers/"], function () {
     Route::get('/', [SubscriberController::class, 'getAllSubscribers'])->name('subscribers');
     Route::get('{ueId}/{plmnId}', [SubscriberController::class, 'getSubscriber'])->name('get_subscriber');
     Route::get('add', [SubscriberController::class, 'showAddSubscriberForm'])->name('add_subscriber');
+    Route::get('import', [SubscriberController::class, 'importSubscribers'])->name('import_subscriber');
     Route::post('add', [SubscriberController::class, 'addSubscriber'])->name('add_subscriber');
     Route::post('update', [SubscriberController::class, 'updateSubscriber'])->name('update_subscriber');
     Route::get('delete', [SubscriberController::class, 'deleteSubscriber'])->name('delete_subscriber');

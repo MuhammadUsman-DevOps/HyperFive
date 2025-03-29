@@ -25,6 +25,7 @@ class SubscriberController extends Controller
 
         return view('core.subscribers.subscribers', compact('subscribers'));
     }
+
     public function getSubscriber($ueId, $plmnId)
     {
         $subscriber = $this->subscriberService->getSubscriber($ueId, $plmnId);
@@ -35,7 +36,6 @@ class SubscriberController extends Controller
 
         return view('core.subscribers.subscriber_detail', compact('subscriber'));
     }
-
 
 
     public function addSubscriber(Request $request, $ueId, $plmnId)
@@ -66,8 +66,9 @@ class SubscriberController extends Controller
 
     public function showAddSubscriberForm()
     {
-        return view('core.subscribers.add_subscriber');
+        return view('core.subscribers.import_subscriber');
     }
+
     public function updateSubscriber(Request $request, $ueId, $plmnId)
     {
         $request->validate([
@@ -104,4 +105,46 @@ class SubscriberController extends Controller
 
         return redirect()->route('subscribers')->with('success', 'Subscriber deleted successfully.');
     }
+
+    public function importSubscribers(Request $request)
+    {
+        $file = $request->file('json_file');
+
+        if (!$file || $file->getClientOriginalExtension() !== 'json') {
+            return response()->json(['message' => 'Invalid JSON file'], 400);
+        }
+
+        $json = json_decode(file_get_contents($file->getRealPath()), true);
+
+        if (!is_array($json)) {
+            return response()->json(['message' => 'JSON should be an array of subscribers'], 400);
+        }
+
+        $results = [];
+
+        foreach ($json as $subscriber) {
+            $ueId = $subscriber['ueId'] ?? null;
+            $plmnId = $subscriber['plmnID'] ?? null;
+
+            if (!$ueId || !$plmnId) {
+                $results[] = ['ueId' => $ueId, 'status' => 'Missing ueId or plmnID'];
+                continue;
+            }
+
+            $response = $this->subscriberService->addSubscriber($ueId, $plmnId, $subscriber);
+
+            $results[] = [
+                'ueId' => $ueId,
+                'status' => $response ? 'Success' : 'Failed'
+            ];
+        }
+
+        return response()->json([
+            'message' => 'Import completed',
+            'results' => $results
+        ]);
+
+    }
+
+
 }
