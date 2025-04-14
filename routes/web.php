@@ -5,8 +5,10 @@ use App\Http\Controllers\Core\SubscriberController;
 use App\Http\Controllers\Core\TenantController;
 use App\Http\Controllers\Core\UEController;
 use App\Http\Controllers\Core\UserController;
-use App\Http\Controllers\Docker\ServicesController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Docker\ServiceManagementController;
+use App\Http\Controllers\Docker\ServiceConfigController;
+use App\Http\Controllers\Docker\CommandController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,7 +19,6 @@ Route::get('/logout', [AuthenticationController::class, 'logout'])->name('logout
 
 //Route::get('/subscribers', [SubscriberController::class, 'index'])->name('subscribers')->middleware('auth.session');
 //Route::get('/subscribers/{ueId}/{plmnId}', [SubscriberController::class, 'show'])->name('subscriber.detail');
-
 
 
 Route::group(["prefix" => "ue/"], function () {
@@ -60,34 +61,46 @@ Route::group(["prefix"=>"tenants/"], function () {
     Route::post('update', [TenantController::class, 'updateTenant'])->name('update_tenant');
 });
 
-Route::group(["prefix" => "hyper-five/"], function () {
-    //Services URLs
-    Route::get('services', [ServicesController::class, 'listServices'])->name('services.list');
-    Route::post('start-engine', [ServicesController::class, 'startFullSetup'])->name('start_engine');
-    Route::post('stop-engine', [ServicesController::class, 'stopFullSetup'])->name('stop_engine');
-    Route::get('config', [ServicesController::class, 'getConfigFromVM'])->name('config.list');
-    Route::get('config/amf', [ServicesController::class, 'AMFConfigs'])->name('amf_configs');
-    Route::get('config/smf', [ServicesController::class, 'SMFConfigs'])->name('smf_configs');
-    Route::get('config/udm', [ServicesController::class, 'UDMConfigs'])->name('udm_configs');
-    Route::get('config/udr', [ServicesController::class, 'UDRConfigs'])->name('udr_configs');
-    Route::get('config/ausf', [ServicesController::class, 'AUSFConfigs'])->name('ausf_configs');
-    Route::get('config/pcf', [ServicesController::class, 'PCFConfigs'])->name('pcf_configs');
-    Route::get('config/chf', [ServicesController::class, 'CHFConfigs'])->name('chf_configs');
-    Route::get('config/ehr', [ServicesController::class, 'EHRConfigs'])->name('ehr_configs');
-    Route::get('config/nrf', [ServicesController::class, 'NRFconfigs'])->name('nrf_configs');
-    Route::get('config/upf', [ServicesController::class, 'UPFConfigs'])->name('upf_configs');
-    Route::get('config/system', [ServicesController::class, 'systemConfigs'])->name('system_configs');
 
+Route::prefix('hyper-five')->group(function () {
 
-    Route::post('/docker/start/{containerId}', [ServicesController::class, 'startService'])->name('start_service');
-    Route::post('/docker/stop/{containerId}', [ServicesController::class, 'stopService'])->name('stop_service');
-    Route::post('/docker/restart/{containerId}', [ServicesController::class, 'restartService'])->name('restart_service');
+     ///////////  Service Management Routes ///////////
 
+    Route::controller(ServiceManagementController::class)->group(function () {
+        Route::get('services', 'listServices')->name('services.list');
+        Route::post('start-engine', 'startFullSetup')->name('start_engine');
+        Route::post('stop-engine', 'stopFullSetup')->name('stop_engine');
 
-    Route::get('/docker/logs/{containerId}', [ServicesController::class, 'viewLogs'])->name('view_logs');
+        Route::post('docker/start/{containerId}', 'startService')->name('start_service');
+        Route::post('docker/stop/{containerId}', 'stopService')->name('stop_service');
+        Route::post('docker/restart/{containerId}', 'restartService')->name('restart_service');
+    });
 
-    Route::get('/docker/command/{containerId}', [ServicesController::class, 'commandExecutionPage'])->name('command_execution');
-    Route::post('/docker/execute/{containerId}', [ServicesController::class, 'executeCommand'])->name('execute_command');
-    Route::post('/containers/{containerId}/stop-command', [ServicesController::class, 'stopCommand'])->name('stop_command');
+    /////////// Configuration Routes ///////////
+
+    Route::controller(ServiceConfigController::class)->prefix('config')->group(function () {
+        Route::get('/', 'getConfigFromVM')->name('config.list');
+        Route::get('amf', 'AMFConfigs')->name('amf_configs');
+        Route::get('smf', 'SMFConfigs')->name('smf_configs');
+        Route::get('udm', 'UDMConfigs')->name('udm_configs');
+        Route::get('udr', 'UDRConfigs')->name('udr_configs');
+        Route::get('ausf', 'AUSFConfigs')->name('ausf_configs');
+        Route::get('pcf', 'PCFConfigs')->name('pcf_configs');
+        Route::get('chf', 'CHFConfigs')->name('chf_configs');
+        Route::get('ehr', 'EHRConfigs')->name('ehr_configs');
+        Route::get('nrf', 'NRFconfigs')->name('nrf_configs');
+        Route::get('upf', 'UPFConfigs')->name('upf_configs');
+        Route::get('system', 'systemConfigs')->name('system_configs');
+    });
+
+    ///////////  Command Execution Routes ///////////
+    
+    Route::controller(CommandController::class)->group(function () {
+        Route::get('docker/logs/{containerId}', 'viewLogs')->name('view_logs');
+        Route::get('docker/command/{containerId}', 'commandExecutionPage')->name('command_execution');
+        Route::post('docker/execute/{containerId}', 'executeCommand')->name('execute_command');
+        Route::post('containers/{containerId}/stop-command', 'stopCommand')->name('stop_command');
+    });
 });
+
 

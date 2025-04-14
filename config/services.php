@@ -34,5 +34,11 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'docker' => [
+        'api_url' => env('DOCKER_API_URL'),
+        'app_host' => env('DOCKER_APP_HOST'),
+        'user_name' => env('DOCKER_USER_NAME'),
+        'user_password' => env('DOCKER_USER_PASSWORD'),
+    ],
 
 ];
