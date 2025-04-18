@@ -30,18 +30,61 @@ class ServiceConfigController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
+
     public function AMFConfigs()
     {
         try {
-            $sshService = new SSHService();
-            $filePath = '/home/imran/free5gc/free5gc-compose/config/amfcfg.yaml';
-            $content = $sshService->getFileContent($filePath);
-            $yamlContent = Yaml::parse($content);
-            return view('docker.config', ['yamlContent' => $yamlContent, "page" => "AMF Configuration"]);
+            // Simulated static YAML structure as a PHP array
+            $yamlContent = [
+                'version' => '1.0.0',
+                'info' => [
+                    'description' => 'AMF Config Sample',
+                    'contactName' => 'Admin',
+                    'contactEmail' => 'admin@example.com',
+                ],
+                'configuration' => [
+                    'sbi' => [
+                        'scheme' => 'https',
+                        'registerIPv4' => '127.0.0.1',
+                        'bindingIPv4' => '0.0.0.0',
+                        'port' => 29518,
+                    ],
+                    'nrfUri' => 'http://nrf.free5gc.org:29510',
+                    'serviceNameList' => [
+                        'namf-comm',
+                        'namf-evts',
+                        'namf-mt',
+                        'namf-loc',
+                    ],
+                    'amfName' => 'AMF',
+                    't3502' => 720,
+                    't3512' => 3600,
+                    'supportTAList' => [
+                        [
+                            'tac' => '0001',
+                            'broadcastPLMNList' => [
+                                [
+                                    'mcc' => '208',
+                                    'mnc' => '93',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+    
+            return view('docker.config', [
+                'yamlContent' => $yamlContent,
+                'page' => 'AMF Configuration',
+            ]);
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
         }
     }
+    
     public function SMFConfigs()
     {
         try {
